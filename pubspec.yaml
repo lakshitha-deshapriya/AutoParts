@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+  flutter_vector_icons: ^1.0.0
 
   widget_lib:
     path: packages/widget_lib
