@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "853122921828",
+    "project_id": "auto-parts-4bdb0",
+    "storage_bucket": "auto-parts-4bdb0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:853122921828:android:64a736c20e60a7da4cb671",
+        "android_client_info": {
+          "package_name": "com.example.auto_parts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "853122921828-dikc2m69di4b6lc0fodfcs61vk0nc8uk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8rWGCNgMpGr3urvAKw555cG4LzGXDgwY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "853122921828-dikc2m69di4b6lc0fodfcs61vk0nc8uk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
