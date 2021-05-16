@@ -1,6 +1,6 @@
 import 'package:auto_parts/constants/constant.dart';
 import 'package:auto_parts/widgets/favourites/favourites.dart';
-import 'package:auto_parts/widgets/parts/parts.dart';
+import 'package:auto_parts/widgets/parts/parts_widget.dart';
 import 'package:auto_parts/widgets/services/services.dart';
 import 'package:auto_parts/widgets/settings/settings.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,7 +39,7 @@ class TabNavigator extends StatelessWidget {
         ),
       ],
       screens: [
-        Parts(),
+        PartsWidget(),
         Services(),
         Favourites(),
         Settings(),

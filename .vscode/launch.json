@@ -1,0 +1,26 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "auto_parts",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart"
+        },
+        {
+            "name": "nav_bar_widget",
+            "cwd": "packages/nav_bar_widget",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "widget_lib",
+            "cwd": "packages/widget_lib",
+            "request": "launch",
+            "type": "dart"
+        }
+    ]
+}

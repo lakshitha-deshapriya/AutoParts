@@ -1,8 +1,8 @@
-import 'package:auto_parts/providers/ads_provider.dart';
+import 'package:auto_parts/providers/parts_provider.dart';
 import 'package:provider/provider.dart';
 
 List<ChangeNotifierProvider> providers = [
-  ChangeNotifierProvider<AdsProvider>(
-    create: (context) => AdsProvider(),
+  ChangeNotifierProvider<PartsProvider>(
+    create: (context) => PartsProvider(),
   ),
 ];
