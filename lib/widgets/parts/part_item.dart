@@ -8,6 +8,14 @@ class PartItem extends StatelessWidget {
 
   PartItem({@required this.width, @required this.part});
 
+  getSubString(Part part) {
+    String str = part.brand + ', ' + part.model;
+    if (part.year.isNotEmpty) {
+      str += ' (' + part.year + ')';
+    }
+    return str;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,8 +25,9 @@ class PartItem extends StatelessWidget {
       ),
       child: ThemeCard(
         darkColor: Colors.grey.withOpacity(0.2),
-        lightColor: Color.fromRGBO(237, 237, 237, 1),
+        lightColor: Color.fromRGBO(245, 245, 245, 1),
         borderRadius: width * 0.04,
+        elevation: 3,
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: width * 0.02),
           child: Row(
@@ -51,7 +60,17 @@ class PartItem extends StatelessWidget {
                       part.name,
                       softWrap: false,
                       overflow: TextOverflow.fade,
-                      style: TextStyle(fontSize: width * 0.045),
+                      style: TextStyle(
+                          fontSize: width * 0.045, fontWeight: FontWeight.bold),
+                    ),
+                    ThemeText(
+                      getSubString(part),
+                      softWrap: false,
+                      overflow: TextOverflow.fade,
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: width * 0.038,
+                          fontStyle: FontStyle.italic),
                     ),
                   ],
                 ),

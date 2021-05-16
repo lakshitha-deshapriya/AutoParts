@@ -1,8 +1,10 @@
 import 'package:auto_parts/models/part.dart';
 import 'package:auto_parts/providers/parts_provider.dart';
 import 'package:auto_parts/widgets/parts/part_item.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:widget_lib/widget_lib.dart';
 
 class PartsWidget extends StatelessWidget {
   @override
@@ -26,7 +28,11 @@ class PartsWidget extends StatelessWidget {
           if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
-              return Text('Loading...');
+              return Center(
+                child: PlatformCircularProgressIndicator(
+                  height: width * 0.3,
+                ),
+              );
             default:
               return ListView.builder(
                 itemCount: snapshot.data.length,
