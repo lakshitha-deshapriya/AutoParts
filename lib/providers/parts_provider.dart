@@ -9,7 +9,7 @@ class PartsProvider with ChangeNotifier {
   StreamController<List<Part>> _streamController =
       StreamController<List<Part>>();
   bool _initialized = false;
-  bool _next = false;
+  bool _nextLoading = false;
 
   List<Part> _parts = [];
   List<DocumentSnapshot> _snapshots = [];
@@ -34,8 +34,8 @@ class PartsProvider with ChangeNotifier {
   }
 
   getNextPage() async {
-    if (!_next) {
-      _next = true;
+    if (!_nextLoading) {
+      _nextLoading = true;
 
       QuerySnapshot _querySnapshot = await FirebaseFirestore.instance
           .collection(Constant.partsCollection)
@@ -54,11 +54,13 @@ class PartsProvider with ChangeNotifier {
         _streamController.add(_parts);
 
         if (_snapshots.length == Constant.partsLimit) {
-          _next = false;
+          _nextLoading = false;
         }
       }
     }
   }
 
   StreamController<List<Part>> get controller => _streamController;
+
+  bool get hasNext => !_nextLoading;
 }

@@ -7,6 +7,19 @@ class Part {
   String year;
   DateTime entered;
   DateTime modified;
+  String cur;
+  double price;
+
+  static final List<String> jsonValiables = [
+    'entered',
+    'modified',
+    'name',
+    'brand',
+    'model',
+    'year',
+    'cur',
+    'price'
+  ];
 
   Part({
     this.name,
@@ -15,20 +28,25 @@ class Part {
     this.year,
     this.entered,
     this.modified,
+    this.cur,
+    this.price,
   });
 
   factory Part.fromJson(dynamic json) {
-    Timestamp entered = json['entered'];
-    Timestamp modified = json['modified'];
+    Timestamp entered = json[jsonValiables[0]];
+    Timestamp modified = json[jsonValiables[1]];
+    int price = json[jsonValiables[7]];
     return Part(
-      name: json['name'],
-      brand: json['brand'],
-      model: json['model'],
-      year: json['year'],
+      name: json[jsonValiables[2]],
+      brand: json[jsonValiables[3]],
+      model: json[jsonValiables[4]],
+      year: json[jsonValiables[5]],
       entered:
           DateTime.fromMicrosecondsSinceEpoch(entered.microsecondsSinceEpoch),
       modified:
           DateTime.fromMicrosecondsSinceEpoch(modified.microsecondsSinceEpoch),
+      cur: json[jsonValiables[6]],
+      price: price.toDouble(),
     );
   }
 }
