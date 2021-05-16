@@ -19,26 +19,45 @@ class PartItem extends StatelessWidget {
         darkColor: Colors.grey.withOpacity(0.2),
         lightColor: Color.fromRGBO(237, 237, 237, 1),
         borderRadius: width * 0.04,
-        child: Row(
-          children: [
-            AspectRatio(
-              aspectRatio: 1 / 1,
-              child: Padding(
-                padding: EdgeInsets.all(width * 0.02),
-                child: ThemeBorderContainer(
-                  borderWidth: width * 0.003,
-                  borderRadius: width * 0.01,
-                  darkColor: Colors.white,
-                  lightColor: Colors.grey,
-                  child: Image.asset(
-                    'assets/images/default_part.jpg',
-                    fit: BoxFit.cover,
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: width * 0.02),
+          child: Row(
+            children: [
+              Container(
+                width: width * 0.3,
+                padding: EdgeInsets.symmetric(horizontal: width * 0.02),
+                child: AspectRatio(
+                  aspectRatio: 1 / 1,
+                  child: ThemeBorderContainer(
+                    borderWidth: width * 0.003,
+                    borderRadius: width * 0.01,
+                    darkColor: Colors.white,
+                    lightColor: Colors.grey,
+                    child: Image.asset(
+                      'assets/images/default_part.jpg',
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Text(part.name),
-          ],
+              Container(
+                width: width * 0.65,
+                padding: EdgeInsets.symmetric(vertical: width * 0.01),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ThemeText(
+                      part.name,
+                      softWrap: false,
+                      overflow: TextOverflow.fade,
+                      style: TextStyle(fontSize: width * 0.045),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
