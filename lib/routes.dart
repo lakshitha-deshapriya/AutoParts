@@ -26,7 +26,7 @@ class Routes {
   static Map<String, WidgetBuilder> routesList(BuildContext ctx) {
     return {
       RouteName.tabNavigator: (ctx) => TabNavigator(),
-      RouteName.partItem: (ctx) => PartDetails(),
+      // RouteName.partItem: (ctx) => PartDetails(),
     };
   }
 }

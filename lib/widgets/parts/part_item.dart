@@ -69,6 +69,7 @@ class PartItem extends StatelessWidget {
   }
 
   Widget loadImage(Part part, double width) {
+    bool hasCover = part.coverUrl.isNotEmpty;
     return AspectRatio(
       aspectRatio: 1 / 1,
       child: ThemeBorderContainer(
@@ -76,10 +77,16 @@ class PartItem extends StatelessWidget {
         borderRadius: width * 0.01,
         darkColor: Colors.white,
         lightColor: Colors.grey,
-        child: Image.asset(
-          'assets/images/default_part.jpg',
-          fit: BoxFit.cover,
-        ),
+        child: hasCover
+            ? Image.network(
+                part.coverUrl,
+                fit: BoxFit.cover,
+                filterQuality: FilterQuality.none,
+              )
+            : Image.asset(
+                'assets/images/default_part.jpg',
+                fit: BoxFit.cover,
+              ),
       ),
     );
   }
