@@ -29,6 +29,7 @@ dependencies:
   firebase_core: ^1.1.0
   provider: ^5.0.0
   fancy_shimmer_image: ^2.0.0+1
+  flutter_card_swipper: ^0.4.0
 
   widget_lib:
     path: packages/widget_lib
