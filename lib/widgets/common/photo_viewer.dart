@@ -1,4 +1,5 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swipper/flutter_card_swiper.dart';
 import 'package:widget_lib/widget_lib.dart';
@@ -20,6 +21,12 @@ class _PhotoViewerState extends State<PhotoViewer> {
   Widget build(BuildContext context) {
     return PlatformScaffold(
       backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+      ),
+      cupertinoAppBar: CupertinoNavigationBar(
+        backgroundColor: Colors.transparent,
+      ),
       body: Dismissible(
         direction: DismissDirection.vertical,
         dismissThresholds: {

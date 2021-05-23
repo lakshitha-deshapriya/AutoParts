@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:widget_lib/widgets/platform_specific/platform_widget.dart';
 
 class PlatformScaffold extends PlatformWidget<CupertinoPageScaffold, Scaffold> {
-  final PreferredSizeWidget appBar;
+  final AppBar appBar;
+  final CupertinoNavigationBar cupertinoAppBar;
   final Widget body;
   final Widget background;
   final Widget bottomNavBar;
@@ -14,6 +15,7 @@ class PlatformScaffold extends PlatformWidget<CupertinoPageScaffold, Scaffold> {
   PlatformScaffold({
     @required this.body,
     this.appBar,
+    this.cupertinoAppBar,
     this.background,
     this.bottomNavBar,
     this.topPadding = true,
@@ -49,6 +51,7 @@ class PlatformScaffold extends PlatformWidget<CupertinoPageScaffold, Scaffold> {
   @override
   CupertinoPageScaffold createIosWidget(BuildContext context) {
     return CupertinoPageScaffold(
+      navigationBar: cupertinoAppBar,
       child: Padding(
         padding: EdgeInsets.only(
             top: topPadding ? MediaQuery.of(context).padding.top : 0),
