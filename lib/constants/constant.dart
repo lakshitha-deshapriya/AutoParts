@@ -6,6 +6,6 @@ class Constant {
   static final String usernameKey = 'user_name';
 
   static final String partsCollection = 'parts';
-  static final int partsLimit = 6;
+  static final int partsLimit = 5;
   static final String initialSort = 'modified';
 }

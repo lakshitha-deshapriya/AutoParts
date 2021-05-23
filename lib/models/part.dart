@@ -10,6 +10,7 @@ class Part {
   String cur;
   double price;
   String coverUrl;
+  List<String> images;
 
   static final enteredKey = 'entered';
   static final modifiedKey = 'modified';
@@ -20,6 +21,7 @@ class Part {
   static final curKey = 'cur';
   static final priceKey = 'price';
   static final coverUrlKey = 'cover';
+  static final imagesKey = 'images';
 
   Part({
     this.name,
@@ -31,6 +33,7 @@ class Part {
     this.cur,
     this.price,
     this.coverUrl,
+    this.images,
   });
 
   factory Part.fromJson(QueryDocumentSnapshot json) {
@@ -45,6 +48,9 @@ class Part {
     String cur = jsonData[curKey];
     int price = jsonData[priceKey];
     String coverUrl = jsonData[coverUrlKey]?.toString() ?? '';
+    List<String> images = jsonData.containsKey(imagesKey)
+        ? List<String>.from(jsonData[imagesKey])
+        : [];
 
     DateTime entered = DateTime.fromMicrosecondsSinceEpoch(
         enteredTimestamp.microsecondsSinceEpoch);
@@ -61,6 +67,7 @@ class Part {
       cur: cur,
       price: price.toDouble(),
       coverUrl: coverUrl,
+      images: images,
     );
   }
 }

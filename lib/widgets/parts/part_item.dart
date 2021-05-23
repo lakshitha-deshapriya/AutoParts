@@ -1,6 +1,7 @@
 import 'package:auto_parts/models/part.dart';
 import 'package:auto_parts/utils/navigation_util.dart';
 import 'package:auto_parts/widgets/parts/child/part_details.dart';
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:widget_lib/widget_lib.dart';
 
@@ -78,10 +79,8 @@ class PartItem extends StatelessWidget {
         darkColor: Colors.white,
         lightColor: Colors.grey,
         child: hasCover
-            ? Image.network(
-                part.coverUrl,
-                fit: BoxFit.cover,
-                filterQuality: FilterQuality.none,
+            ? FancyShimmerImage(
+                imageUrl: part.coverUrl,
               )
             : Image.asset(
                 'assets/images/default_part.jpg',
