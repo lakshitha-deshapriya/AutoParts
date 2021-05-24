@@ -30,6 +30,8 @@ class _PhotoViewerState extends State<PhotoViewer> {
       body: Dismissible(
         direction: DismissDirection.vertical,
         dismissThresholds: {
+          DismissDirection.endToStart: 0.2,
+          DismissDirection.startToEnd: 0.2,
           DismissDirection.down: 0.2,
           DismissDirection.up: 0.2,
         },
@@ -37,9 +39,9 @@ class _PhotoViewerState extends State<PhotoViewer> {
         onDismissed: (direction) => Navigator.of(context).pop(),
         child: Hero(
           tag: widget.images[widget.initIndex],
-          child: Swiper(
-            index: widget.initIndex,
-            itemBuilder: (BuildContext context, int index) {
+          child: ThemeSwiper(
+            initialIndex: widget.initIndex,
+            builder: (BuildContext context, int index) {
               return InteractiveViewer(
                 transformationController: _transformationController,
                 onInteractionEnd: (details) {
@@ -54,6 +56,7 @@ class _PhotoViewerState extends State<PhotoViewer> {
             itemCount: widget.images.length,
             loop: false,
             layout: SwiperLayout.DEFAULT,
+            addPagination: false,
           ),
         ),
       ),

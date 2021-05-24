@@ -1,4 +1,3 @@
-import 'package:auto_parts/widgets/parts/child/part_details.dart';
 import 'package:auto_parts/widgets/tab_navigator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

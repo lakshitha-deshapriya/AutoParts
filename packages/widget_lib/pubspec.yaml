@@ -12,6 +12,8 @@ dependencies:
   flutter:
     sdk: flutter
   google_fonts: ^2.1.0
+  fancy_shimmer_image: ^2.0.0+1
+  flutter_card_swipper: ^0.4.0
 
 dev_dependencies:
   flutter_test:
