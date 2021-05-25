@@ -40,6 +40,7 @@ class ThemeSwiper extends ThemeWidget<Widget> {
   Widget createDarkWidget(
       BuildContext context, Color color, bool forceIos, bool forceMaterial) {
     return Swiper(
+      index: initialIndex,
       itemBuilder: builder,
       itemCount: itemCount,
       viewportFraction: viewportFraction,
@@ -63,6 +64,7 @@ class ThemeSwiper extends ThemeWidget<Widget> {
   Widget createLightWidget(
       BuildContext context, Color color, bool forceIos, bool forceMaterial) {
     return Swiper(
+      index: initialIndex,
       itemBuilder: builder,
       itemCount: itemCount,
       viewportFraction: viewportFraction,
