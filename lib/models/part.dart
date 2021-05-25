@@ -5,6 +5,7 @@ class Part {
   String brand;
   String model;
   String year;
+  String condition;
   DateTime entered;
   DateTime modified;
   String cur;
@@ -18,6 +19,7 @@ class Part {
   static final brandKey = 'brand';
   static final modelKey = 'model';
   static final yearKey = 'year';
+  static final conditionKey = 'condition';
   static final curKey = 'cur';
   static final priceKey = 'price';
   static final coverUrlKey = 'cover';
@@ -28,6 +30,7 @@ class Part {
     this.brand,
     this.model,
     this.year,
+    this.condition,
     this.entered,
     this.modified,
     this.cur,
@@ -43,6 +46,7 @@ class Part {
     String brand = jsonData[brandKey];
     String model = jsonData[modelKey];
     String year = jsonData[yearKey];
+    String condition = jsonData[conditionKey];
     Timestamp enteredTimestamp = jsonData[enteredKey];
     Timestamp modifiedTimestamp = jsonData[modifiedKey];
     String cur = jsonData[curKey];
@@ -62,6 +66,7 @@ class Part {
       brand: brand,
       model: model,
       year: year,
+      condition: condition,
       entered: entered,
       modified: modified,
       cur: cur,

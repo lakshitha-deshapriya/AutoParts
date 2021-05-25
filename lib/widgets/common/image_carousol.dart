@@ -1,4 +1,5 @@
 import 'package:auto_parts/widgets/common/photo_viewer.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:widget_lib/widget_lib.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
@@ -33,11 +34,11 @@ class ImageCarousol extends StatelessWidget {
         );
       },
       itemCount: images.length,
-      viewportFraction: 0.85,
-      scale: 0.85,
+      viewportFraction: 0.9,
+      scale: 0.95,
       loop: false,
-      activeDarkColor: Colors.blueGrey,
-      darkColor: Colors.white,
+      activeDarkColor: CupertinoColors.systemGrey,
+      darkColor: CupertinoColors.white,
       activeLightColor: Colors.lightBlueAccent,
       lightColor: Color.fromRGBO(230, 230, 230, 1),
       layout: SwiperLayout.DEFAULT,
