@@ -6,16 +6,13 @@ import 'package:auto_parts/widgets/settings/settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nav_bar_widget/nav_bar_widget.dart';
-import 'package:widget_lib/widgets/utils/widget_util.dart';
 
 class TabNavigator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PlatformNavBarScaffold(
       forceMaterial: Constant.forceMaterial,
-      activeColor: WidgetUtil.isDarkMode(context)
-          ? CupertinoColors.white
-          : CupertinoColors.systemBlue,
+      activeColor: Color.fromRGBO(29, 153, 255, 1),
       barItems: [
         BottomNavigationBarItem(
           icon: Icon(CupertinoIcons.wrench),

@@ -37,7 +37,7 @@ class ImageCarousol extends StatelessWidget {
       viewportFraction: 0.9,
       scale: 0.95,
       loop: false,
-      activeDarkColor: CupertinoColors.systemGrey,
+      activeDarkColor: Color.fromRGBO(29, 153, 255, 1),
       darkColor: CupertinoColors.white,
       activeLightColor: Colors.lightBlueAccent,
       lightColor: Color.fromRGBO(230, 230, 230, 1),

@@ -17,58 +17,99 @@ class PartDetails extends StatelessWidget {
     final double width = MediaQuery.of(context).size.width;
 
     return PlatformScaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: height * 0.35,
-              child: ImageCarousol(images: images),
-            ),
-            Container(
-              padding: EdgeInsets.only(
-                top: width * 0.05,
-                left: width * 0.05,
-                right: width * 0.05,
-                bottom: width * 0.02,
+      body: SafeArea(
+        top: false,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: height * 0.35,
+                child: ImageCarousol(images: images),
               ),
-              child: ThemeText(
-                part.name,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: width * 0.048,
+              Container(
+                padding: EdgeInsets.only(
+                  top: width * 0.05,
+                  left: width * 0.05,
+                  right: width * 0.05,
+                  bottom: width * 0.02,
+                ),
+                child: ThemeText(
+                  part.name,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: width * 0.048,
+                  ),
                 ),
               ),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(
-                vertical: width * 0.02,
-                horizontal: width * 0.05,
+              Container(
+                padding: EdgeInsets.symmetric(
+                  vertical: width * 0.02,
+                  horizontal: width * 0.05,
+                ),
+                child: ThemeText(
+                  '(TODO: Add the marketer name)',
+                  softWrap: false,
+                  overflow: TextOverflow.fade,
+                  darkColor: CupertinoColors.systemGrey4,
+                  style: TextStyle(
+                    fontSize: width * 0.042,
+                  ),
+                ),
               ),
-              child: getIndentedData('Brand', part.brand, width),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(
-                vertical: width * 0.02,
-                horizontal: width * 0.05,
+              Container(
+                padding: EdgeInsets.symmetric(
+                  vertical: width * 0.02,
+                  horizontal: width * 0.05,
+                ),
+                child: getIndentedData('Brand', part.brand, width),
               ),
-              child: getIndentedData('Model', part.model, width),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(
-                vertical: width * 0.02,
-                horizontal: width * 0.05,
+              Container(
+                padding: EdgeInsets.symmetric(
+                  vertical: width * 0.02,
+                  horizontal: width * 0.05,
+                ),
+                child: getIndentedData('Model', part.model, width),
               ),
-              child: getIndentedData('Year', part.year, width),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(
-                vertical: width * 0.02,
-                horizontal: width * 0.05,
+              Container(
+                padding: EdgeInsets.symmetric(
+                  vertical: width * 0.02,
+                  horizontal: width * 0.05,
+                ),
+                child: getIndentedData('Year', part.year, width),
               ),
-              child: getIndentedData('Condition', part.condition, width),
-            ),
-          ],
+              Container(
+                padding: EdgeInsets.symmetric(
+                  vertical: width * 0.02,
+                  horizontal: width * 0.05,
+                ),
+                child: getIndentedData('Condition', part.condition, width),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(
+                  vertical: width * 0.02,
+                  horizontal: width * 0.05,
+                ),
+                child: getIndentedData(
+                    'Price', part.cur + ' ' + part.price.toString(), width),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(
+                  vertical: width * 0.02,
+                  horizontal: width * 0.05,
+                ),
+                child: ThemeText(
+                  part.description,
+                  softWrap: true,
+                  overflow: TextOverflow.fade,
+                  darkColor: CupertinoColors.systemGrey4,
+                  style: TextStyle(
+                    fontSize: width * 0.042,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
