@@ -1,6 +1,8 @@
+import 'package:auto_parts/models/savable.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Part {
+class Part extends Savable {
+  String id;
   String name;
   String brand;
   String model;
@@ -14,6 +16,7 @@ class Part {
   String coverUrl;
   List<String> images;
 
+  static final idKey = 'id';
   static final enteredKey = 'entered';
   static final modifiedKey = 'modified';
   static final nameKey = 'name';
@@ -27,7 +30,42 @@ class Part {
   static final coverUrlKey = 'cover';
   static final imagesKey = 'images';
 
+  static final String idCol = 'ID';
+  static final String nameCol = 'NAME';
+  static final String brandCol = 'BRAND';
+  static final String modelCol = 'MODEL';
+  static final String yearCol = 'YEAR';
+  static final String conditionCol = 'CONDITION';
+  static final String descriptionCol = 'DESC';
+  static final String curCol = 'CUR';
+  static final String priceCol = 'PRICE';
+  static final String coverUrlCol = 'COVER_URL';
+  static final String enteredCol = 'ENTERED';
+  static final String modifiedCol = 'MODIFIED';
+  static final String imageUrlCol = 'IMAGE_URL';
+
+  static final Map<String, String> partsColMap = {
+    idCol: 'TEXT PRIMARY KEY',
+    nameCol: 'TEXT',
+    brandCol: 'TEXT',
+    modelCol: 'TEXT',
+    yearCol: 'TEXT',
+    conditionCol: 'TEXT',
+    descriptionCol: 'TEXT',
+    curCol: 'TEXT',
+    priceCol: 'REAL',
+    coverUrlCol: 'TEXT',
+    enteredCol: 'INTEGER',
+    modifiedCol: 'INTEGER',
+  };
+
+  static final Map<String, String> partImagesColMap = {
+    idCol: 'TEXT',
+    imageUrlCol: 'TEXT',
+  };
+
   Part({
+    this.id,
     this.name,
     this.brand,
     this.model,
@@ -45,6 +83,7 @@ class Part {
   factory Part.fromJson(QueryDocumentSnapshot json) {
     Map<String, dynamic> jsonData = json.data();
 
+    String id = jsonData[idKey];
     String name = jsonData[nameKey];
     String brand = jsonData[brandKey];
     String model = jsonData[modelKey];
@@ -67,6 +106,7 @@ class Part {
         modifiedTimestamp.microsecondsSinceEpoch);
 
     return Part(
+      id: id,
       name: name,
       brand: brand,
       model: model,
@@ -80,5 +120,40 @@ class Part {
       coverUrl: coverUrl,
       images: images,
     );
+  }
+
+  static List<String> getOnCreateSqlList() {
+    final List<String> sqlList = [];
+
+    String partSql = 'CREATE TABLE PARTS ( ';
+    int partIndex = 1;
+    partsColMap.forEach((key, value) {
+      partSql = partSql + key + ' ' + value;
+      if (partIndex != partsColMap.length) {
+        partSql = partSql + ', ';
+      } else {
+        partSql = partSql + ' )';
+      }
+      partIndex++;
+    });
+    sqlList.add(partSql);
+
+    String partImagesSql = 'CREATE TABLE PART_IMAGES ( ';
+    int imagesIndex = 1;
+    partImagesColMap.forEach((key, value) {
+      partImagesSql = partImagesSql + key + ' ' + value + ', ';
+      if (imagesIndex == partImagesColMap.length) {
+        partImagesSql = partImagesSql +
+            'PRIMARY KEY ( ' +
+            idCol +
+            ', ' +
+            imageUrlCol +
+            ' ) )';
+      }
+      imagesIndex++;
+    });
+    sqlList.add(partImagesSql);
+
+    return sqlList;
   }
 }

@@ -8,4 +8,6 @@ class Constant {
   static final String partsCollection = 'parts';
   static final int partsLimit = 5;
   static final String initialSort = 'modified';
+
+  static final String dbName = 'auto-parts.db';
 }
