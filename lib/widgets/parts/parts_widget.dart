@@ -1,4 +1,3 @@
-import 'package:auto_parts/handlers/database_handler.dart';
 import 'package:auto_parts/models/part.dart';
 import 'package:auto_parts/providers/parts_provider.dart';
 import 'package:auto_parts/widgets/parts/part_item.dart';

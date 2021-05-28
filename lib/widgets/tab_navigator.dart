@@ -1,4 +1,6 @@
 import 'package:auto_parts/constants/constant.dart';
+import 'package:auto_parts/providers/favourite_provider.dart';
+import 'package:auto_parts/providers/parts_provider.dart';
 import 'package:auto_parts/widgets/favourites/favourites.dart';
 import 'package:auto_parts/widgets/parts/parts_widget.dart';
 import 'package:auto_parts/widgets/services/services.dart';
@@ -6,10 +8,19 @@ import 'package:auto_parts/widgets/settings/settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nav_bar_widget/nav_bar_widget.dart';
+import 'package:provider/provider.dart';
 
 class TabNavigator extends StatelessWidget {
+  //Initialize initial data
+  void initData(BuildContext context) {
+    context.read<PartsProvider>().init();
+    context.read<FavouriteProvider>().init();
+  }
+
   @override
   Widget build(BuildContext context) {
+    initData(context);
+
     return PlatformNavBarScaffold(
       forceMaterial: Constant.forceMaterial,
       activeColor: Color.fromRGBO(29, 153, 255, 1),
