@@ -27,37 +27,7 @@ class PartDetails extends StatelessWidget {
       child: PlatformScaffold(
         cupertinoAppBar: CupertinoNavigationBar(
           backgroundColor: Colors.transparent,
-          trailing: GestureDetector(
-            child: Selector<FavouriteProvider, Tuple2<bool, String>>(
-              selector: (_, provider) =>
-                  Tuple2(provider.isInitialized, provider.newFavouriteId),
-              builder: (_, tuple, child) {
-                if ((tuple.item1 && tuple.item2 == part.id) ||
-                    favouriteProvider.isFavourite(part.id)) {
-                  return Icon(
-                    Icons.favorite,
-                    color: CupertinoColors.systemRed,
-                    size: width * 0.075,
-                  );
-                } else {
-                  return child;
-                }
-              },
-              child: Icon(
-                Icons.favorite_border,
-                color: CupertinoColors.systemGrey,
-                size: width * 0.075,
-              ),
-            ),
-            onTap: () {
-              if (favouriteProvider.isFavourite(part.id) ||
-                  favouriteProvider.newFavouriteId == part.id) {
-                favouriteProvider.removeFromFavourites(part);
-              } else {
-                favouriteProvider.addToFavourites(part);
-              }
-            },
-          ),
+          trailing: getFavouriteIcon(favouriteProvider, width),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -154,6 +124,40 @@ class PartDetails extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  getFavouriteIcon(FavouriteProvider favouriteProvider, double width) {
+    return GestureDetector(
+      child: Selector<FavouriteProvider, Tuple2<bool, String>>(
+        selector: (_, provider) =>
+            Tuple2(provider.isInitialized, provider.newFavouriteId),
+        builder: (_, tuple, child) {
+          if ((tuple.item1 && tuple.item2 == part.id) ||
+              favouriteProvider.isFavourite(part.id)) {
+            return Icon(
+              Icons.favorite,
+              color: CupertinoColors.systemRed,
+              size: width * 0.075,
+            );
+          } else {
+            return child;
+          }
+        },
+        child: Icon(
+          Icons.favorite_border,
+          color: CupertinoColors.systemGrey,
+          size: width * 0.075,
+        ),
+      ),
+      onTap: () {
+        if (favouriteProvider.isFavourite(part.id) ||
+            favouriteProvider.newFavouriteId == part.id) {
+          favouriteProvider.removeFromFavourites(part);
+        } else {
+          favouriteProvider.addToFavourites(part);
+        }
+      },
     );
   }
 
