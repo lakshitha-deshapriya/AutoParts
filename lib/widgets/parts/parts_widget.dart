@@ -10,7 +10,6 @@ class PartsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final PartsProvider partProvider = context.read<PartsProvider>();
-    partProvider.init();
 
     final double width = MediaQuery.of(context).size.width;
 

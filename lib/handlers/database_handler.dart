@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:auto_parts/constants/constant.dart';
 import 'package:auto_parts/models/part.dart';
+import 'package:auto_parts/models/part_image.dart';
 import 'package:auto_parts/models/savable.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -20,11 +21,11 @@ class DatabaseHandler {
   }
 
   void _createDb(Database db, int version) async {
-    List<String> partsSqlList = Part.getOnCreateSqlList();
+    String partSql = Part.getOnCreateSql();
+    await db.execute(partSql);
 
-    for (String sql in partsSqlList) {
-      await db.execute(sql);
-    }
+    String partImageSql = PartImage.getOnCreateSql();
+    await db.execute(partImageSql);
   }
 
   void _upgradeDb(Database db, int oldVersion, int newVersion) async {}
@@ -63,7 +64,12 @@ class DatabaseHandler {
     return _database.delete(tableName);
   }
 
-  dynamic executeQuery(String sql) async {
-    return _database.rawQuery(sql);
+  Future<List<Map<String, dynamic>>> executeQuery(
+      String sql, List<dynamic> arguments) async {
+    if (arguments == null || arguments.isEmpty) {
+      return await _database.rawQuery(sql);
+    } else {
+      return await _database.rawQuery(sql, arguments);
+    }
   }
 }

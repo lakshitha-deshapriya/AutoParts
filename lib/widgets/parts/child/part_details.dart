@@ -1,8 +1,10 @@
 import 'package:auto_parts/models/part.dart';
+import 'package:auto_parts/providers/favourite_provider.dart';
 import 'package:auto_parts/widgets/common/image_carousol.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:widget_lib/widget_lib.dart';
+import 'package:provider/provider.dart';
 
 class PartDetails extends StatelessWidget {
   final Part part;
@@ -11,21 +13,33 @@ class PartDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> images = part.images;
+    final List<String> images =
+        part.images.map((image) => image.imageUrl).toList();
 
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
+
+    final FavouriteProvider favouriteProvider =
+        context.read<FavouriteProvider>();
+
+    final bool isAFavourite = favouriteProvider.isFavourite(part.id);
 
     return SafeArea(
       child: PlatformScaffold(
         cupertinoAppBar: CupertinoNavigationBar(
           backgroundColor: Colors.transparent,
           trailing: GestureDetector(
-            child: Icon(
-              Icons.favorite_border,
-              color: CupertinoColors.systemRed,
-              size: width * 0.075,
-            ),
+            child: isAFavourite
+                ? Icon(
+                    Icons.favorite,
+                    color: CupertinoColors.systemRed,
+                    size: width * 0.075,
+                  )
+                : Icon(
+                    Icons.favorite_border,
+                    color: CupertinoColors.systemGrey,
+                    size: width * 0.075,
+                  ),
             onTap: () {
               print('clicked');
             },

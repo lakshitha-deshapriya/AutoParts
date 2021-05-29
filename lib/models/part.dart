@@ -1,7 +1,10 @@
+import 'package:auto_parts/models/part_image.dart';
 import 'package:auto_parts/models/savable.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Part extends Savable {
+  static String tableName = 'PARTS';
+
   String id;
   String name;
   String brand;
@@ -14,7 +17,23 @@ class Part extends Savable {
   String cur;
   double price;
   String coverUrl;
-  List<String> images;
+  List<PartImage> images;
+
+  Part({
+    this.id,
+    this.name,
+    this.brand,
+    this.model,
+    this.year,
+    this.condition,
+    this.description,
+    this.entered,
+    this.modified,
+    this.cur,
+    this.price,
+    this.coverUrl,
+    this.images,
+  });
 
   static final idKey = 'id';
   static final enteredKey = 'entered';
@@ -42,9 +61,8 @@ class Part extends Savable {
   static final String coverUrlCol = 'COVER_URL';
   static final String enteredCol = 'ENTERED';
   static final String modifiedCol = 'MODIFIED';
-  static final String imageUrlCol = 'IMAGE_URL';
 
-  static final Map<String, String> partsColMap = {
+  static final Map<String, String> colMap = {
     idCol: 'TEXT PRIMARY KEY',
     nameCol: 'TEXT',
     brandCol: 'TEXT',
@@ -58,27 +76,6 @@ class Part extends Savable {
     enteredCol: 'INTEGER',
     modifiedCol: 'INTEGER',
   };
-
-  static final Map<String, String> partImagesColMap = {
-    idCol: 'TEXT',
-    imageUrlCol: 'TEXT',
-  };
-
-  Part({
-    this.id,
-    this.name,
-    this.brand,
-    this.model,
-    this.year,
-    this.condition,
-    this.description,
-    this.entered,
-    this.modified,
-    this.cur,
-    this.price,
-    this.coverUrl,
-    this.images,
-  });
 
   factory Part.fromJson(QueryDocumentSnapshot json) {
     Map<String, dynamic> jsonData = json.data();
@@ -96,8 +93,10 @@ class Part extends Savable {
     String cur = jsonData[curKey];
     int price = jsonData[priceKey];
     String coverUrl = jsonData[coverUrlKey]?.toString() ?? '';
-    List<String> images = jsonData.containsKey(imagesKey)
+    List<PartImage> images = jsonData.containsKey(imagesKey)
         ? List<String>.from(jsonData[imagesKey])
+            .map((imageUrl) => PartImage(id: id, imageUrl: imageUrl))
+            .toList()
         : [];
 
     DateTime entered = DateTime.fromMicrosecondsSinceEpoch(
@@ -122,38 +121,58 @@ class Part extends Savable {
     );
   }
 
-  static List<String> getOnCreateSqlList() {
-    final List<String> sqlList = [];
-
-    String partSql = 'CREATE TABLE PARTS ( ';
+  static String getOnCreateSql() {
+    String partSql = 'CREATE TABLE' + tableName + '( ';
     int partIndex = 1;
-    partsColMap.forEach((key, value) {
+    colMap.forEach((key, value) {
       partSql = partSql + key + ' ' + value;
-      if (partIndex != partsColMap.length) {
+      if (partIndex != colMap.length) {
         partSql = partSql + ', ';
       } else {
         partSql = partSql + ' )';
       }
       partIndex++;
     });
-    sqlList.add(partSql);
+    return partSql;
+  }
 
-    String partImagesSql = 'CREATE TABLE PART_IMAGES ( ';
-    int imagesIndex = 1;
-    partImagesColMap.forEach((key, value) {
-      partImagesSql = partImagesSql + key + ' ' + value + ', ';
-      if (imagesIndex == partImagesColMap.length) {
-        partImagesSql = partImagesSql +
-            'PRIMARY KEY ( ' +
-            idCol +
-            ', ' +
-            imageUrlCol +
-            ' ) )';
-      }
-      imagesIndex++;
-    });
-    sqlList.add(partImagesSql);
+  @override
+  String getTableName() {
+    return tableName;
+  }
 
-    return sqlList;
+  @override
+  Map<String, dynamic> toMap() {
+    var map = Map<String, dynamic>();
+    map[idCol] = id;
+    map[nameCol] = name;
+    map[brandCol] = brand;
+    map[modelCol] = model;
+    map[yearCol] = year;
+    map[conditionCol] = condition;
+    map[descriptionCol] = description;
+    map[curCol] = cur;
+    map[priceCol] = price;
+    map[coverUrlCol] = coverUrl;
+    map[enteredCol] = entered.millisecondsSinceEpoch;
+    map[modifiedCol] = modified.millisecondsSinceEpoch;
+    return map;
+  }
+
+  factory Part.fromMapObject(Map<String, dynamic> map) {
+    return Part(
+      id: map[idCol],
+      name: map[nameCol],
+      brand: map[brandCol],
+      model: map[modelCol],
+      year: map[yearCol],
+      condition: map[conditionCol],
+      description: map[descriptionCol],
+      cur: map[curCol],
+      price: map[priceCol],
+      coverUrl: map[coverUrlCol],
+      entered: DateTime.fromMillisecondsSinceEpoch(map[enteredCol]),
+      modified: DateTime.fromMillisecondsSinceEpoch(map[modifiedCol]),
+    );
   }
 }
