@@ -28,6 +28,7 @@ dependencies:
   cloud_firestore: ^2.0.0
   firebase_core: ^1.1.0
   provider: ^5.0.0
+  tuple: ^2.0.0
   fancy_shimmer_image: ^2.0.0+1
   flutter_card_swipper: ^0.4.0
   sqflite: ^2.0.0+3

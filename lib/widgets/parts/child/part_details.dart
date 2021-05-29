@@ -3,6 +3,7 @@ import 'package:auto_parts/providers/favourite_provider.dart';
 import 'package:auto_parts/widgets/common/image_carousol.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tuple/tuple.dart';
 import 'package:widget_lib/widget_lib.dart';
 import 'package:provider/provider.dart';
 
@@ -22,26 +23,39 @@ class PartDetails extends StatelessWidget {
     final FavouriteProvider favouriteProvider =
         context.read<FavouriteProvider>();
 
-    final bool isAFavourite = favouriteProvider.isFavourite(part.id);
-
     return SafeArea(
       child: PlatformScaffold(
         cupertinoAppBar: CupertinoNavigationBar(
           backgroundColor: Colors.transparent,
           trailing: GestureDetector(
-            child: isAFavourite
-                ? Icon(
+            child: Selector<FavouriteProvider, Tuple2<bool, String>>(
+              selector: (_, provider) =>
+                  Tuple2(provider.isInitialized, provider.newFavouriteId),
+              builder: (_, tuple, child) {
+                if ((tuple.item1 && tuple.item2 == part.id) ||
+                    favouriteProvider.isFavourite(part.id)) {
+                  return Icon(
                     Icons.favorite,
                     color: CupertinoColors.systemRed,
                     size: width * 0.075,
-                  )
-                : Icon(
-                    Icons.favorite_border,
-                    color: CupertinoColors.systemGrey,
-                    size: width * 0.075,
-                  ),
+                  );
+                } else {
+                  return child;
+                }
+              },
+              child: Icon(
+                Icons.favorite_border,
+                color: CupertinoColors.systemGrey,
+                size: width * 0.075,
+              ),
+            ),
             onTap: () {
-              print('clicked');
+              if (favouriteProvider.isFavourite(part.id) ||
+                  favouriteProvider.newFavouriteId == part.id) {
+                favouriteProvider.removeFromFavourites(part);
+              } else {
+                favouriteProvider.addToFavourites(part);
+              }
             },
           ),
         ),

@@ -7,6 +7,7 @@ class FavouriteProvider with ChangeNotifier {
   List<Part> _favourites = [];
   Set<String> _favouriteIds = {};
   bool _initialized = false;
+  String _newFavouriteId;
 
   init() async {
     loadFavourites();
@@ -30,10 +31,28 @@ class FavouriteProvider with ChangeNotifier {
   }
 
   bool get isInitialized => _initialized;
+  setInitialized(bool initialized) {
+    _initialized = initialized;
+    notifyListeners();
+  }
+
+  List<Part> get favourites => _favourites;
+
+  String get newFavouriteId => _newFavouriteId;
+  setNewFavouriteId(String id) {
+    _newFavouriteId = id;
+    notifyListeners();
+  }
 
   bool isFavourite(String id) {
     return _favouriteIds.contains(id);
   }
 
-  List<Part> get favourites => _favourites;
+  addToFavourites(Part part) async {
+    setNewFavouriteId(part.id);
+  }
+
+  removeFromFavourites(Part part) async {
+    setNewFavouriteId('');
+  }
 }
