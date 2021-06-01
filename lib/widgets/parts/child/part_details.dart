@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:auto_parts/models/part.dart';
 import 'package:auto_parts/widgets/common/favourite_icon.dart';
+import 'package:auto_parts/widgets/common/google_map_show.dart';
 import 'package:auto_parts/widgets/common/image_carousol.dart';
 import 'package:auto_parts/widgets/common/indented_data_row.dart';
 import 'package:flutter/cupertino.dart';
@@ -81,12 +82,40 @@ class PartDetails extends StatelessWidget {
                     ),
                   ),
                 ),
+                loadGoogleMapWidget(part, width),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  loadGoogleMapWidget(Part part, double width) {
+    bool showMap = false;
+    double latitude;
+    double longitude;
+    if (part.location != null && part.location.isNotEmpty) {
+      showMap = true;
+      List<String> location = part.location.split(',');
+      latitude = double.parse(location[0].trim());
+      longitude = double.parse(location[1].trim());
+    }
+
+    return showMap
+        ? Container(
+            height: width,
+            padding: EdgeInsets.symmetric(
+              vertical: width * 0.02,
+              horizontal: width * 0.05,
+            ),
+            child: GoogleMapShow(
+              latitude: latitude,
+              longitude: longitude,
+              initialZoom: 15,
+            ),
+          )
+        : Container();
   }
 
   AppBar getAppBar(BuildContext context) {
