@@ -1,11 +1,12 @@
+import 'dart:io';
+
 import 'package:auto_parts/models/part.dart';
-import 'package:auto_parts/providers/favourite_provider.dart';
+import 'package:auto_parts/widgets/common/favourite_icon.dart';
 import 'package:auto_parts/widgets/common/image_carousol.dart';
+import 'package:auto_parts/widgets/common/indented_data_row.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tuple/tuple.dart';
 import 'package:widget_lib/widget_lib.dart';
-import 'package:provider/provider.dart';
 import 'package:widget_lib/widgets/utils/widget_util.dart';
 
 class PartDetails extends StatelessWidget {
@@ -21,21 +22,10 @@ class PartDetails extends StatelessWidget {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
 
-    final FavouriteProvider favouriteProvider =
-        context.read<FavouriteProvider>();
-
     return SafeArea(
       child: PlatformScaffold(
-        appBar: AppBar(
-          backgroundColor: WidgetUtil.isDarkMode(context)? Colors.transparent : Colors.white,
-          actions: [
-            getFavouriteIcon(favouriteProvider, width),
-          ],
-        ),
-        cupertinoAppBar: CupertinoNavigationBar(
-          backgroundColor: Colors.transparent,
-          trailing: getFavouriteIcon(favouriteProvider, width),
-        ),
+        appBar: getAppBar(context),
+        cupertinoAppBar: getCupertinoNavigationBar(),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
@@ -75,42 +65,7 @@ class PartDetails extends StatelessWidget {
                     ),
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    vertical: width * 0.02,
-                    horizontal: width * 0.05,
-                  ),
-                  child: getIndentedData('Brand', part.brand, width),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    vertical: width * 0.02,
-                    horizontal: width * 0.05,
-                  ),
-                  child: getIndentedData('Model', part.model, width),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    vertical: width * 0.02,
-                    horizontal: width * 0.05,
-                  ),
-                  child: getIndentedData('Year', part.year, width),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    vertical: width * 0.02,
-                    horizontal: width * 0.05,
-                  ),
-                  child: getIndentedData('Condition', part.condition, width),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    vertical: width * 0.02,
-                    horizontal: width * 0.05,
-                  ),
-                  child: getIndentedData(
-                      'Price', part.cur + ' ' + part.price.toString(), width),
-                ),
+                ...getIndentedData(width),
                 Container(
                   padding: EdgeInsets.symmetric(
                     vertical: width * 0.02,
@@ -134,64 +89,74 @@ class PartDetails extends StatelessWidget {
     );
   }
 
-  getFavouriteIcon(FavouriteProvider favouriteProvider, double width) {
-    return GestureDetector(
-      child: Selector<FavouriteProvider, Tuple2<bool, String>>(
-        selector: (_, provider) =>
-            Tuple2(provider.isInitialized, provider.newFavouriteId),
-        builder: (_, tuple, child) {
-          if ((tuple.item1 && tuple.item2 == part.id) ||
-              favouriteProvider.isFavourite(part.id)) {
-            return Icon(
-              Icons.favorite,
-              color: CupertinoColors.systemRed,
-              size: width * 0.075,
-            );
-          } else {
-            return child;
-          }
-        },
-        child: Icon(
-          Icons.favorite_border,
-          color: CupertinoColors.systemGrey,
-          size: width * 0.075,
-        ),
-      ),
-      onTap: () {
-        if (favouriteProvider.isFavourite(part.id) ||
-            favouriteProvider.newFavouriteId == part.id) {
-          favouriteProvider.removeFromFavourites(part);
-        } else {
-          favouriteProvider.addToFavourites(part);
-        }
-      },
-    );
+  AppBar getAppBar(BuildContext context) {
+    return Platform.isAndroid
+        ? AppBar(
+            backgroundColor: WidgetUtil.isDarkMode(context)
+                ? Colors.transparent
+                : Colors.white,
+            actions: [
+              FavouriteIcon(part: part),
+            ],
+          )
+        : null;
   }
 
-  getIndentedData(String first, String second, double screenWidth) {
-    return Row(
-      children: [
-        Container(
-          width: screenWidth * 0.225,
-          child: ThemeText(
-            first,
-            darkColor: Color.fromRGBO(130, 130, 130, 1),
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: screenWidth * 0.042,
-            ),
-          ),
-        ),
-        ThemeText(
-          ':   ' + second,
-          softWrap: false,
-          overflow: TextOverflow.fade,
-          darkColor: Color.fromRGBO(230, 230, 230, 1),
-          style: TextStyle(
-            fontSize: screenWidth * 0.042,
-          ),
-        ),
-      ],
+  CupertinoNavigationBar getCupertinoNavigationBar() {
+    return Platform.isIOS
+        ? CupertinoNavigationBar(
+            backgroundColor: Colors.transparent,
+            trailing: FavouriteIcon(part: part),
+          )
+        : null;
+  }
+
+  List<Widget> getIndentedData(double width) {
+    final EdgeInsets padding = EdgeInsets.symmetric(
+      vertical: width * 0.02,
+      horizontal: width * 0.05,
     );
+    return [
+      Container(
+        padding: padding,
+        child: IndentedDataRow(
+          first: 'Brand',
+          second: part.brand,
+          screenWidth: width,
+        ),
+      ),
+      Container(
+        padding: padding,
+        child: IndentedDataRow(
+          first: 'Model',
+          second: part.model,
+          screenWidth: width,
+        ),
+      ),
+      Container(
+        padding: padding,
+        child: IndentedDataRow(
+          first: 'Year',
+          second: part.year,
+          screenWidth: width,
+        ),
+      ),
+      Container(
+        padding: padding,
+        child: IndentedDataRow(
+          first: 'Condition',
+          second: part.condition,
+          screenWidth: width,
+        ),
+      ),
+      Container(
+        padding: padding,
+        child: IndentedDataRow(
+          first: 'Price',
+          second: part.cur + ' ' + part.price.toString(),
+          screenWidth: width,
+        ),
+      ),
+    ];
   }
 }
