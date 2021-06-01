@@ -17,6 +17,7 @@ class Part extends Savable {
   String cur;
   double price;
   String coverUrl;
+  String location;
   List<PartImage> images;
 
   Part({
@@ -32,6 +33,7 @@ class Part extends Savable {
     this.cur,
     this.price,
     this.coverUrl,
+    this.location,
     this.images,
   });
 
@@ -47,6 +49,7 @@ class Part extends Savable {
   static final curKey = 'cur';
   static final priceKey = 'price';
   static final coverUrlKey = 'cover';
+  static final locationKey = 'loc';
   static final imagesKey = 'images';
 
   static final String idCol = 'ID';
@@ -61,6 +64,7 @@ class Part extends Savable {
   static final String coverUrlCol = 'COVER_URL';
   static final String enteredCol = 'ENTERED';
   static final String modifiedCol = 'MODIFIED';
+  static final String locationCol = 'LOCATION';
 
   static final Map<String, String> colMap = {
     idCol: 'TEXT PRIMARY KEY',
@@ -75,6 +79,7 @@ class Part extends Savable {
     coverUrlCol: 'TEXT',
     enteredCol: 'INTEGER',
     modifiedCol: 'INTEGER',
+    locationCol: 'TEXT',
   };
 
   factory Part.fromJson(QueryDocumentSnapshot json) {
@@ -93,6 +98,7 @@ class Part extends Savable {
     String cur = jsonData[curKey];
     int price = jsonData[priceKey];
     String coverUrl = jsonData[coverUrlKey]?.toString() ?? '';
+    String location = jsonData[locationKey]?.toString() ?? '';
     List<PartImage> images = jsonData.containsKey(imagesKey)
         ? List<String>.from(jsonData[imagesKey])
             .map((imageUrl) => PartImage(id: id, imageUrl: imageUrl))
@@ -117,6 +123,7 @@ class Part extends Savable {
       cur: cur,
       price: price.toDouble(),
       coverUrl: coverUrl,
+      location: location,
       images: images,
     );
   }
@@ -166,6 +173,7 @@ class Part extends Savable {
     map[coverUrlCol] = coverUrl;
     map[enteredCol] = entered.millisecondsSinceEpoch;
     map[modifiedCol] = modified.millisecondsSinceEpoch;
+    map[locationCol] = location;
     return map;
   }
 
@@ -183,6 +191,7 @@ class Part extends Savable {
       coverUrl: map[coverUrlCol],
       entered: DateTime.fromMillisecondsSinceEpoch(map[enteredCol]),
       modified: DateTime.fromMillisecondsSinceEpoch(map[modifiedCol]),
+      location: map[locationCol],
     );
   }
 }

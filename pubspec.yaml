@@ -32,6 +32,7 @@ dependencies:
   fancy_shimmer_image: ^2.0.0+1
   flutter_card_swipper: ^0.4.0
   sqflite: ^2.0.0+3
+  google_maps_flutter: ^2.0.6
 
   widget_lib:
     path: packages/widget_lib
