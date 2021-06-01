@@ -10,6 +10,7 @@ class PlatformNavBarScaffold
   final Color activeColor;
   final Color inactiveColor;
   final double iconSize;
+  final double elevation;
 
   PlatformNavBarScaffold({
     @required this.barItems,
@@ -17,12 +18,12 @@ class PlatformNavBarScaffold
     this.activeColor,
     this.inactiveColor = CupertinoColors.systemGrey,
     this.iconSize = 30.0,
+    this.elevation = 8.0,
     bool forceIos,
     bool forceMaterial,
   }) : super(forceIos: forceIos, forceMaterial: forceMaterial);
 
-  final List<GlobalKey<NavigatorState>> navigatorKeys =
-      List<GlobalKey<NavigatorState>>();
+  final List<GlobalKey<NavigatorState>> navigatorKeys = [];
 
   validate() {
     assert(this.barItems != null, 'Bar Items cannot be null');
@@ -47,6 +48,7 @@ class PlatformNavBarScaffold
       activeColor: activeColor,
       inactiveColor: inactiveColor,
       iconSize: iconSize,
+      elevation: elevation,
     );
   }
 

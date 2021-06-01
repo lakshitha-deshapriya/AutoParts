@@ -14,11 +14,10 @@ class PartsWidget extends StatefulWidget {
 }
 
 class _PartsWidgetState extends State<PartsWidget> {
-  PartsProvider partsProvider;
   StreamController streamController;
   @override
   Widget build(BuildContext context) {
-    partsProvider = context.read<PartsProvider>();
+    final PartsProvider partsProvider = context.read<PartsProvider>();
 
     streamController = StreamController<List<Part>>();
 
@@ -76,7 +75,6 @@ class _PartsWidgetState extends State<PartsWidget> {
 
   @override
   void dispose() {
-    print('disposed');
     streamController.close();
     super.dispose();
   }

@@ -6,6 +6,7 @@ class NavBarAndroidScaffold extends StatefulWidget {
   final Color activeColor;
   final Color inactiveColor;
   final double iconSize;
+  final double elevation;
 
   NavBarAndroidScaffold({
     @required this.barItems,
@@ -13,6 +14,7 @@ class NavBarAndroidScaffold extends StatefulWidget {
     this.activeColor,
     this.inactiveColor,
     this.iconSize = 30.0,
+    this.elevation = 8.0,
   });
   @override
   _NavBarAndroidScaffoldState createState() => _NavBarAndroidScaffoldState();
@@ -25,7 +27,7 @@ class _NavBarAndroidScaffoldState extends State<NavBarAndroidScaffold> {
     return Scaffold(
       body: widget.screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        elevation: 20,
+        elevation: widget.elevation,
         type: BottomNavigationBarType.fixed,
         iconSize: widget.iconSize,
         selectedItemColor: widget.activeColor,

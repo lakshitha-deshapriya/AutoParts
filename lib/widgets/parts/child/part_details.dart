@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 import 'package:widget_lib/widget_lib.dart';
 import 'package:provider/provider.dart';
+import 'package:widget_lib/widgets/utils/widget_util.dart';
 
 class PartDetails extends StatelessWidget {
   final Part part;
@@ -26,7 +27,7 @@ class PartDetails extends StatelessWidget {
     return SafeArea(
       child: PlatformScaffold(
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: WidgetUtil.isDarkMode(context)? Colors.transparent : Colors.white,
           actions: [
             getFavouriteIcon(favouriteProvider, width),
           ],

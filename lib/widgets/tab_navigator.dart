@@ -24,6 +24,7 @@ class TabNavigator extends StatelessWidget {
     return PlatformNavBarScaffold(
       forceMaterial: Constant.forceMaterial,
       activeColor: Color.fromRGBO(29, 153, 255, 1),
+      elevation: 20,
       barItems: [
         BottomNavigationBarItem(
           icon: Icon(CupertinoIcons.wrench),

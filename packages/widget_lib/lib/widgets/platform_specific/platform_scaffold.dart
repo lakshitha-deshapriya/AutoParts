@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:widget_lib/widgets/platform_specific/platform_widget.dart';
 
 class PlatformScaffold extends PlatformWidget<CupertinoPageScaffold, Scaffold> {
-  final AppBar appBar;
+  final Widget appBar;
   final CupertinoNavigationBar cupertinoAppBar;
   final Widget body;
   final Widget background;
