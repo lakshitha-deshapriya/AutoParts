@@ -25,6 +25,12 @@ class PartDetails extends StatelessWidget {
 
     return SafeArea(
       child: PlatformScaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          actions: [
+            getFavouriteIcon(favouriteProvider, width),
+          ],
+        ),
         cupertinoAppBar: CupertinoNavigationBar(
           backgroundColor: Colors.transparent,
           trailing: getFavouriteIcon(favouriteProvider, width),

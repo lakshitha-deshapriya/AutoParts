@@ -25,6 +25,7 @@ class _NavBarAndroidScaffoldState extends State<NavBarAndroidScaffold> {
     return Scaffold(
       body: widget.screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        elevation: 20,
         type: BottomNavigationBarType.fixed,
         iconSize: widget.iconSize,
         selectedItemColor: widget.activeColor,

@@ -6,8 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class PartsProvider with ChangeNotifier {
-  StreamController<List<Part>> _streamController =
-      StreamController<List<Part>>();
   bool _initialized = false;
   bool _nextLoading = false;
 
@@ -28,12 +26,11 @@ class PartsProvider with ChangeNotifier {
         _parts.add(Part.fromJson(doc));
       });
 
-      _streamController.add(_parts);
-      _initialized = true;
+      setInitialized(true);
     }
   }
 
-  getNextPage() async {
+  getNextPage(StreamController controller) async {
     if (!_nextLoading) {
       _nextLoading = true;
 
@@ -51,7 +48,7 @@ class PartsProvider with ChangeNotifier {
           _parts.add(Part.fromJson(doc));
         });
 
-        _streamController.add(_parts);
+        controller.add(_parts);
 
         if (_snapshots.length == Constant.partsLimit) {
           _nextLoading = false;
@@ -60,7 +57,15 @@ class PartsProvider with ChangeNotifier {
     }
   }
 
-  StreamController<List<Part>> get controller => _streamController;
+  bool get isInitialized => _initialized;
+  setInitialized(bool initialized) {
+    _initialized = initialized;
+    notifyListeners();
+  }
+
+  addDataToStream(StreamController streamController) {
+    streamController.add(_parts);
+  }
 
   bool get hasNext => !_nextLoading;
 }

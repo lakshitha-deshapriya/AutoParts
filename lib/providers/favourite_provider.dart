@@ -7,7 +7,7 @@ class FavouriteProvider with ChangeNotifier {
   List<Part> _favourites = [];
   Set<String> _favouriteIds = {};
   bool _initialized = false;
-  String _newFavouriteId;
+  String _newFavouriteId = '';
 
   init() async {
     loadFavourites();
@@ -20,6 +20,7 @@ class FavouriteProvider with ChangeNotifier {
         .getAll(Part.tableName)
         .then((value) => value.map((map) => Part.fromMapObject(map)).toList());
 
+    _favouriteIds.clear();
     for (Part part in _favourites) {
       _favouriteIds.add(part.id);
       List<PartImage> images = await handler
@@ -28,6 +29,7 @@ class FavouriteProvider with ChangeNotifier {
       part.images = images;
     }
     _initialized = true;
+    await handler.closeConnection();
   }
 
   bool get isInitialized => _initialized;
@@ -49,10 +51,43 @@ class FavouriteProvider with ChangeNotifier {
   }
 
   addToFavourites(Part part) async {
+    await insertPartToDb(part);
+
+    await loadFavourites();
+
     setNewFavouriteId(part.id);
   }
 
   removeFromFavourites(Part part) async {
-    setNewFavouriteId('');
+    await removePartFromDb(part);
+
+    await loadFavourites();
+
+    setNewFavouriteId('changed');
+  }
+
+  insertPartToDb(Part part) async {
+    DatabaseHandler handler = new DatabaseHandler();
+    await handler.openConnection();
+
+    int id = await handler.insert(part);
+    if (id != 0) {
+      await handler.insertAll(part.images);
+    }
+
+    await handler.closeConnection();
+  }
+
+  removePartFromDb(Part part) async {
+    DatabaseHandler handler = new DatabaseHandler();
+    await handler.openConnection();
+
+    await handler.delete(part);
+
+    if (part.images.isNotEmpty) {
+      await handler.delete(part.images[0]);
+    }
+
+    await handler.closeConnection();
   }
 }

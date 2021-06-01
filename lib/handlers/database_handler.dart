@@ -11,7 +11,7 @@ class DatabaseHandler {
   static Database _database;
 
   Future<Database> openConnection() async {
-    if (_database == null) {
+    if (_database == null || !_database.isOpen) {
       Directory directory = await getApplicationDocumentsDirectory();
       String path = directory.path + Constant.dbName;
       _database = await openDatabase(path,
@@ -42,7 +42,7 @@ class DatabaseHandler {
     return await _database.insert(savable.getTableName(), savable.toMap());
   }
 
-  void insertAll(List<Savable> savables) async {
+  Future insertAll(List<Savable> savables) async {
     Batch batch = _database.batch();
     for (Savable savable in savables) {
       batch.insert(savable.getTableName(), savable.toMap());

@@ -122,7 +122,7 @@ class Part extends Savable {
   }
 
   static String getOnCreateSql() {
-    String partSql = 'CREATE TABLE' + tableName + '( ';
+    String partSql = 'CREATE TABLE ' + tableName + ' ( ';
     int partIndex = 1;
     colMap.forEach((key, value) {
       partSql = partSql + key + ' ' + value;
@@ -139,6 +139,16 @@ class Part extends Savable {
   @override
   String getTableName() {
     return tableName;
+  }
+
+  @override
+  String getArgs() {
+    return "ID = ?";
+  }
+
+  @override
+  List<dynamic> getArgValues() {
+    return [id];
   }
 
   @override

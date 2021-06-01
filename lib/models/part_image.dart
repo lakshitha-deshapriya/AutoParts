@@ -44,6 +44,16 @@ class PartImage extends Savable {
   }
 
   @override
+  String getArgs() {
+    return 'ID = ?';
+  }
+
+  @override
+  List<dynamic> getArgValues() {
+    return [id];
+  }
+
+  @override
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
     map[idCol] = id;
