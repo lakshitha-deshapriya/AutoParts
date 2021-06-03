@@ -7,11 +7,13 @@ class GoogleMapShow extends StatefulWidget {
   final double latitude;
   final double longitude;
   final double initialZoom;
+  final MapType mapType;
 
   GoogleMapShow({
     @required this.latitude,
     @required this.longitude,
     this.initialZoom = 15,
+    this.mapType = MapType.normal,
   });
 
   @override
@@ -23,11 +25,7 @@ class _GoogleMapShowState extends State<GoogleMapShow> {
   @override
   Widget build(BuildContext context) {
     return GoogleMap(
-      onTap: (argument) {
-        print(argument.latitude);
-        print(argument.longitude);
-      },
-      mapType: MapType.normal,
+      mapType: widget.mapType,
       initialCameraPosition: CameraPosition(
         target: LatLng(widget.latitude, widget.longitude),
         zoom: widget.initialZoom,
@@ -37,8 +35,7 @@ class _GoogleMapShowState extends State<GoogleMapShow> {
       },
       markers: {
         Marker(
-          markerId: MarkerId('test'),
-          draggable: true,
+          markerId: MarkerId('Ad location'),
           position: LatLng(widget.latitude, widget.longitude),
         ),
       },
