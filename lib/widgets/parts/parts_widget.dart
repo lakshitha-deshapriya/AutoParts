@@ -16,8 +16,6 @@ class PartsWidget extends StatefulWidget {
 class _PartsWidgetState extends State<PartsWidget> {
   StreamController streamController;
 
-  void openFilter() {}
-
   @override
   Widget build(BuildContext context) {
     final PartsProvider partsProvider = context.read<PartsProvider>();
@@ -28,8 +26,8 @@ class _PartsWidgetState extends State<PartsWidget> {
 
     return PlatformScaffold(
       topPadding: false,
-      appBar: getAppBar(width),
-      cupertinoAppBar: getCupertinoNavigationBar(width),
+      appBar: AppBar(title: appBarTitle(width)),
+      cupertinoAppBar: CupertinoNavigationBar(middle: appBarTitle(width)),
       body: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
           if (scrollInfo is ScrollUpdateNotification) {}
@@ -86,65 +84,30 @@ class _PartsWidgetState extends State<PartsWidget> {
     );
   }
 
-  CupertinoNavigationBar getCupertinoNavigationBar(double width) {
-    return CupertinoNavigationBar(
-      middle: Row(
-        children: [
-          Container(
-            height: width * 0.08,
-            width: width * 0.865,
-            padding: EdgeInsets.only(left: width * 0.01),
-            child: SearchBar(screenWidth: width),
-          ),
-          GestureDetector(
-            onTap: () {
-              openFilter();
-            },
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: width * 0.019,
-                bottom: width * 0.007,
-              ),
-              child: Icon(
-                CupertinoIcons.slider_horizontal_3,
-                size: width * 0.075,
-                color: CupertinoColors.systemGrey,
-              ),
+  Widget appBarTitle(double width) {
+    return Row(
+      children: [
+        Container(
+          height: width * 0.08,
+          width: width * 0.865,
+          padding: EdgeInsets.only(left: width * 0.01),
+          child: SearchBar(screenWidth: width),
+        ),
+        GestureDetector(
+          onTap: () {},
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: width * 0.019,
+              bottom: width * 0.007,
+            ),
+            child: Icon(
+              CupertinoIcons.slider_horizontal_3,
+              size: width * 0.075,
+              color: CupertinoColors.systemGrey,
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  AppBar getAppBar(double width) {
-    return AppBar(
-      title: Row(
-        children: [
-          Container(
-            height: width * 0.08,
-            width: width * 0.865,
-            padding: EdgeInsets.only(left: width * 0.01),
-            child: SearchBar(screenWidth: width),
-          ),
-          GestureDetector(
-            onTap: () {
-              openFilter();
-            },
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: width * 0.019,
-                bottom: width * 0.007,
-              ),
-              child: Icon(
-                CupertinoIcons.slider_horizontal_3,
-                size: width * 0.075,
-                color: CupertinoColors.systemGrey,
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
