@@ -17,6 +17,7 @@ class PlatformTextField extends PlatformWidget<CupertinoTextField, TextField> {
   final int maxLines;
   final TextStyle textStyle;
   final Color cursorColor;
+  final bool enableBorder;
 
   PlatformTextField({
     this.controller,
@@ -33,6 +34,7 @@ class PlatformTextField extends PlatformWidget<CupertinoTextField, TextField> {
     this.maxLines = 1,
     this.textStyle,
     this.cursorColor,
+    this.enableBorder = true,
     bool forceMaterial,
     bool forceIos,
   }) : super(forceMaterial: forceMaterial, forceIos: forceIos);
@@ -44,17 +46,21 @@ class PlatformTextField extends PlatformWidget<CupertinoTextField, TextField> {
       decoration: InputDecoration(
         prefixIcon: prefixIcon,
         contentPadding: EdgeInsets.symmetric(horizontal: insidePadding),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: borderColor),
-          borderRadius: BorderRadius.circular(radius),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-              color: focusedBorderColor == null
-                  ? borderColor
-                  : focusedBorderColor),
-          borderRadius: BorderRadius.circular(radius),
-        ),
+        enabledBorder: enableBorder
+            ? OutlineInputBorder(
+                borderSide: BorderSide(color: borderColor),
+                borderRadius: BorderRadius.circular(radius),
+              )
+            : null,
+        focusedBorder: enableBorder
+            ? OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: focusedBorderColor == null
+                        ? borderColor
+                        : focusedBorderColor),
+                borderRadius: BorderRadius.circular(radius),
+              )
+            : null,
         enabled: true,
         hintText: placeHolder,
         hintStyle: placeHolderStyle,
@@ -88,7 +94,7 @@ class PlatformTextField extends PlatformWidget<CupertinoTextField, TextField> {
       cursorColor: cursorColor,
       decoration: BoxDecoration(
         color: fillColor,
-        border: Border.all(width: 0, color: CupertinoColors.systemGrey),
+        border: enableBorder ? Border.all(width: 0, color: borderColor) : null,
         borderRadius: BorderRadius.circular(radius),
       ),
     );

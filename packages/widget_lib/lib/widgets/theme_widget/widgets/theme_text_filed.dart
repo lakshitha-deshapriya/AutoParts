@@ -23,6 +23,8 @@ class ThemeTextField extends ThemeWidget<Widget> {
   final double insidePadding;
   final Widget prefixIcon;
   final int maxLines;
+  final bool enableBorder;
+  final Color cursorColor;
 
   ThemeTextField({
     this.controller,
@@ -44,6 +46,8 @@ class ThemeTextField extends ThemeWidget<Widget> {
     this.insidePadding = 0.0,
     this.prefixIcon,
     this.maxLines = 1,
+    this.enableBorder = true,
+    this.cursorColor = CupertinoColors.systemGrey,
     bool forceDark,
     bool forceIos,
     bool forceMaterial,
@@ -86,9 +90,10 @@ class ThemeTextField extends ThemeWidget<Widget> {
       prefixIcon: prefixIcon,
       textStyle: textStyle,
       maxLines: maxLines,
-      cursorColor: CupertinoColors.white.withAlpha(50),
+      cursorColor: cursorColor,
       forceIos: forceIos,
       forceMaterial: forceMaterial,
+      enableBorder: enableBorder,
     );
   }
 
@@ -126,7 +131,7 @@ class ThemeTextField extends ThemeWidget<Widget> {
       prefixIcon: prefixIcon,
       textStyle: textStyle,
       maxLines: maxLines,
-      cursorColor: CupertinoColors.systemGrey,
+      cursorColor: cursorColor,
       forceIos: forceIos,
       forceMaterial: forceMaterial,
     );
