@@ -1,5 +1,6 @@
 import 'package:auto_parts/models/part.dart';
 import 'package:auto_parts/utils/navigation_util.dart';
+import 'package:auto_parts/widgets/common/favourite_icon.dart';
 import 'package:auto_parts/widgets/parts/child/part_details.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +10,13 @@ class PartItem extends StatelessWidget {
   final double width;
   final Part part;
   final bool showDate;
+  final bool enableFavouriteAction;
 
   PartItem({
     @required this.width,
     @required this.part,
     this.showDate = true,
+    this.enableFavouriteAction = false,
   });
 
   getSubString(Part part) {
@@ -99,14 +102,25 @@ class PartItem extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ThemeText(
-          part.name,
-          softWrap: false,
-          overflow: TextOverflow.fade,
-          style: TextStyle(
-            fontSize: width * 0.045,
-            fontWeight: FontWeight.bold,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ThemeText(
+              part.name,
+              softWrap: false,
+              overflow: TextOverflow.fade,
+              style: TextStyle(
+                fontSize: width * 0.045,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            FavouriteIcon(
+              part: part,
+              iconSize: width * 0.055,
+              enableAction: enableFavouriteAction,
+              showInactive: false,
+            ),
+          ],
         ),
         ThemeText(
           getSubString(part),

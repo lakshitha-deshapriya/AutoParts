@@ -35,6 +35,7 @@ class Favourites extends StatelessWidget {
                     width: width,
                     part: favouriteProvider.favourites[index],
                     showDate: false,
+                    enableFavouriteAction: true,
                   );
                 },
               ),

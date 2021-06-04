@@ -7,7 +7,16 @@ import 'package:tuple/tuple.dart';
 
 class FavouriteIcon extends StatelessWidget {
   final Part part;
-  const FavouriteIcon({this.part});
+  final double iconSize;
+  final bool enableAction;
+  final bool showInactive;
+
+  const FavouriteIcon({
+    this.part,
+    this.iconSize = -1,
+    this.enableAction = true,
+    this.showInactive = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,24 +35,28 @@ class FavouriteIcon extends StatelessWidget {
             return Icon(
               Icons.favorite,
               color: CupertinoColors.systemRed,
-              size: width * 0.075,
+              size: iconSize == -1 ? width * 0.075 : iconSize,
             );
           } else {
             return child;
           }
         },
-        child: Icon(
-          Icons.favorite_border,
-          color: CupertinoColors.systemGrey,
-          size: width * 0.075,
-        ),
+        child: showInactive
+            ? Icon(
+                Icons.favorite_border,
+                color: CupertinoColors.systemGrey,
+                size: iconSize == -1 ? width * 0.075 : iconSize,
+              )
+            : Container(),
       ),
       onTap: () {
-        if (favouriteProvider.isFavourite(part.id) ||
-            favouriteProvider.newFavouriteId == part.id) {
-          favouriteProvider.removeFromFavourites(part);
-        } else {
-          favouriteProvider.addToFavourites(part);
+        if (enableAction) {
+          if (favouriteProvider.isFavourite(part.id) ||
+              favouriteProvider.newFavouriteId == part.id) {
+            favouriteProvider.removeFromFavourites(part);
+          } else {
+            favouriteProvider.addToFavourites(part);
+          }
         }
       },
     );
