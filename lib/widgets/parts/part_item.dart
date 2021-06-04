@@ -8,8 +8,13 @@ import 'package:widget_lib/widget_lib.dart';
 class PartItem extends StatelessWidget {
   final double width;
   final Part part;
+  final bool showDate;
 
-  PartItem({@required this.width, @required this.part});
+  PartItem({
+    @required this.width,
+    @required this.part,
+    this.showDate = true,
+  });
 
   getSubString(Part part) {
     String str = part.brand + ', ' + part.model;
@@ -57,7 +62,7 @@ class PartItem extends StatelessWidget {
                     children: [
                       getTitleAndSubtitle(part, width),
                       Text(''), //Needs to add the organization name
-                      getPriceAndPostedDate(part),
+                      getPriceAndPostedDate(part, showDate),
                     ],
                   ),
                 ),
@@ -117,7 +122,7 @@ class PartItem extends StatelessWidget {
     );
   }
 
-  getPriceAndPostedDate(Part part) {
+  getPriceAndPostedDate(Part part, bool showDate) {
     final int days = DateTime.now().difference(part.modified).inDays;
     String time = '';
     if (days == 0) {
@@ -135,9 +140,12 @@ class PartItem extends StatelessWidget {
           part.cur + ' ' + part.price.toString(),
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        ThemeText(
-          time,
-          style: TextStyle(color: Colors.grey),
+        Visibility(
+          visible: showDate,
+          child: ThemeText(
+            time,
+            style: TextStyle(color: Colors.grey),
+          ),
         ),
       ],
     );

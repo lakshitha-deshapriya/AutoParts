@@ -43,6 +43,7 @@ class Favourites extends StatelessWidget {
               return PartItem(
                 width: width,
                 part: favouriteProvider.favourites[index],
+                showDate: false,
               );
             },
           ),
