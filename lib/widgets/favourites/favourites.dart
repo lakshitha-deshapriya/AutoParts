@@ -1,88 +1,91 @@
-import 'package:auto_parts/providers/favourite_provider.dart';
-import 'package:auto_parts/widgets/parts/part_item.dart';
+import 'package:auto_parts/utils/navigation_util.dart';
+import 'package:auto_parts/widgets/favourites/favourite_parts.dart';
+import 'package:auto_parts/widgets/favourites/favourite_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tuple/tuple.dart';
 import 'package:widget_lib/widget_lib.dart';
 
 class Favourites extends StatelessWidget {
+  const Favourites();
+
+  navigate(BuildContext context, Widget widget) {
+    NavigationUtil.navigatePush(context, widget);
+  }
+
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
 
-    final FavouriteProvider favouriteProvider =
-        context.read<FavouriteProvider>();
+    final Map<int, List<dynamic>> categoryData = {
+      0: ['Parts', FavouriteParts(), 'assets/images/parts.png', 0.9],
+      1: ['Services', FavouriteServices(), 'assets/images/services.png', 0.8],
+    };
 
     return PlatformScaffold(
       topPadding: false,
       appBar: AppBar(title: appBarTitle(width)),
       cupertinoAppBar: CupertinoNavigationBar(middle: appBarTitle(width)),
-      body: Selector<FavouriteProvider, Tuple2<bool, String>>(
-        selector: (_, provider) =>
-            Tuple2(provider.isInitialized, provider.newFavouriteId),
-        builder: (_, tuple, __) {
-          if (tuple.item1) {
-            return Padding(
-              padding: EdgeInsets.only(
-                top: width * 0.01,
-                bottom: width * 0.01,
-              ),
-              child: ListView.builder(
-                itemCount: favouriteProvider.favourites.length,
-                itemBuilder: (context, index) {
-                  return PartItem(
-                    width: width,
-                    part: favouriteProvider.favourites[index],
-                    showDate: false,
-                    enableFavouriteAction: true,
-                  );
-                },
+      body: Padding(
+        padding: EdgeInsets.symmetric(
+          vertical: width * 0.06,
+          horizontal: width * 0.06,
+        ),
+        child: GridView.builder(
+          itemCount: categoryData.length,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () => navigate(context, categoryData[index][1]),
+              child: Container(
+                child: Stack(
+                  children: [
+                    ThemeBorderContainer(
+                      borderWidth: width * 0.005,
+                      borderRadius: width * 0.05,
+                      darkColor: Colors.white,
+                      lightColor: Colors.grey,
+                      child: ColorFiltered(
+                        colorFilter: ColorFilter.mode(
+                            Colors.black.withOpacity(categoryData[index][3]),
+                            BlendMode.dstATop),
+                        child: Image.asset(
+                          categoryData[index][2],
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: ThemeText(
+                        categoryData[index][0],
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: width * 0.08,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
-          } else {
-            return Center(
-              child: PlatformCircularProgressIndicator(
-                height: width * 0.3,
-              ),
-            );
-          }
-        },
+          },
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: width * 0.45,
+            childAspectRatio: 1,
+            crossAxisSpacing: width * 0.07,
+            mainAxisSpacing: width * 0.02,
+          ),
+        ),
       ),
     );
   }
 
-  onSearchTextSubmitted(String searchText) {
-    print(searchText);
-  }
-
   Widget appBarTitle(double width) {
-    return Row(
-      children: [
-        Container(
-          height: width * 0.08,
-          width: width * 0.865,
-          padding: EdgeInsets.only(left: width * 0.01),
-          child: SearchBar(
-            screenWidth: width,
-            onSubmitted: onSearchTextSubmitted,
-          ),
-        ),
-        GestureDetector(
-          onTap: () {},
-          child: Padding(
-            padding: EdgeInsets.only(
-              left: width * 0.019,
-              bottom: width * 0.007,
-            ),
-            child: Icon(
-              CupertinoIcons.slider_horizontal_3,
-              size: width * 0.075,
-              color: CupertinoColors.systemGrey,
-            ),
-          ),
-        ),
-      ],
+    return ThemeText(
+      'Favourites',
+      style: TextStyle(
+        fontWeight: FontWeight.w500,
+        fontSize: width * 0.05,
+      ),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:auto_parts/constants/constant.dart';
 import 'package:auto_parts/providers/favourite_provider.dart';
 import 'package:auto_parts/providers/parts_provider.dart';
+import 'package:auto_parts/widgets/favourites/favourite_parts.dart';
 import 'package:auto_parts/widgets/favourites/favourites.dart';
 import 'package:auto_parts/widgets/parts/parts_widget.dart';
 import 'package:auto_parts/widgets/services/services.dart';

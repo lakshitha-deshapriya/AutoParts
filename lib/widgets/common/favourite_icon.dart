@@ -28,10 +28,10 @@ class FavouriteIcon extends StatelessWidget {
     return GestureDetector(
       child: Selector<FavouriteProvider, Tuple2<bool, String>>(
         selector: (_, provider) =>
-            Tuple2(provider.isInitialized, provider.newFavouriteId),
+            Tuple2(provider.isInitialized, provider.newFavouritePartId),
         builder: (_, tuple, child) {
           if ((tuple.item1 && tuple.item2 == part.id) ||
-              favouriteProvider.isFavourite(part.id)) {
+              favouriteProvider.isFavouritePart(part.id)) {
             return Icon(
               Icons.favorite,
               color: CupertinoColors.systemRed,
@@ -51,11 +51,11 @@ class FavouriteIcon extends StatelessWidget {
       ),
       onTap: () {
         if (enableAction) {
-          if (favouriteProvider.isFavourite(part.id) ||
-              favouriteProvider.newFavouriteId == part.id) {
-            favouriteProvider.removeFromFavourites(part);
+          if (favouriteProvider.isFavouritePart(part.id) ||
+              favouriteProvider.newFavouritePartId == part.id) {
+            favouriteProvider.removeFromFavouriteParts(part);
           } else {
-            favouriteProvider.addToFavourites(part);
+            favouriteProvider.addToFavouriteParts(part);
           }
         }
       },

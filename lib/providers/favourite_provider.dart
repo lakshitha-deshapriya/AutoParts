@@ -4,10 +4,10 @@ import 'package:auto_parts/models/part_image.dart';
 import 'package:flutter/material.dart';
 
 class FavouriteProvider with ChangeNotifier {
-  List<Part> _favourites = [];
-  Set<String> _favouriteIds = {};
+  List<Part> _favouriteParts = [];
+  Set<String> _favouritePartIds = {};
   bool _initialized = false;
-  String _newFavouriteId = '';
+  String _newFavouritePartId = '';
 
   init() async {
     loadFavourites();
@@ -16,13 +16,13 @@ class FavouriteProvider with ChangeNotifier {
   loadFavourites() async {
     DatabaseHandler handler = DatabaseHandler();
     await handler.openConnection();
-    _favourites = await handler
+    _favouriteParts = await handler
         .getAll(Part.tableName)
         .then((value) => value.map((map) => Part.fromMapObject(map)).toList());
 
-    _favouriteIds.clear();
-    for (Part part in _favourites) {
-      _favouriteIds.add(part.id);
+    _favouritePartIds.clear();
+    for (Part part in _favouriteParts) {
+      _favouritePartIds.add(part.id);
       List<PartImage> images = await handler
           .executeQuery(PartImage.loadQuery, [part.id]).then((value) =>
               value.map((map) => PartImage.fromMapObject(map)).toList());
@@ -38,32 +38,32 @@ class FavouriteProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<Part> get favourites => _favourites;
+  List<Part> get favouriteParts => _favouriteParts;
 
-  String get newFavouriteId => _newFavouriteId;
-  setNewFavouriteId(String id) {
-    _newFavouriteId = id;
+  String get newFavouritePartId => _newFavouritePartId;
+  setNewFavouritePartId(String id) {
+    _newFavouritePartId = id;
     notifyListeners();
   }
 
-  bool isFavourite(String id) {
-    return _favouriteIds.contains(id);
+  bool isFavouritePart(String id) {
+    return _favouritePartIds.contains(id);
   }
 
-  addToFavourites(Part part) async {
+  addToFavouriteParts(Part part) async {
     await insertPartToDb(part);
 
     await loadFavourites();
 
-    setNewFavouriteId(part.id);
+    setNewFavouritePartId(part.id);
   }
 
-  removeFromFavourites(Part part) async {
+  removeFromFavouriteParts(Part part) async {
     await removePartFromDb(part);
 
     await loadFavourites();
 
-    setNewFavouriteId('changed');
+    setNewFavouritePartId('changed');
   }
 
   insertPartToDb(Part part) async {

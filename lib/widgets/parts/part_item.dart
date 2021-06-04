@@ -1,7 +1,7 @@
 import 'package:auto_parts/models/part.dart';
 import 'package:auto_parts/utils/navigation_util.dart';
 import 'package:auto_parts/widgets/common/favourite_icon.dart';
-import 'package:auto_parts/widgets/parts/child/part_details.dart';
+import 'package:auto_parts/widgets/parts/part_details.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:widget_lib/widget_lib.dart';
