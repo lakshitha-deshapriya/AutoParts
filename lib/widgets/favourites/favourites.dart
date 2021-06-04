@@ -21,9 +21,24 @@ class Favourites extends StatelessWidget {
       body: Selector<FavouriteProvider, Tuple2<bool, String>>(
         selector: (_, provider) =>
             Tuple2(provider.isInitialized, provider.newFavouriteId),
-        builder: (_, tuple, child) {
+        builder: (_, tuple, __) {
           if (tuple.item1) {
-            return child;
+            return Padding(
+              padding: EdgeInsets.only(
+                top: width * 0.01,
+                bottom: width * 0.01,
+              ),
+              child: ListView.builder(
+                itemCount: favouriteProvider.favourites.length,
+                itemBuilder: (context, index) {
+                  return PartItem(
+                    width: width,
+                    part: favouriteProvider.favourites[index],
+                    showDate: false,
+                  );
+                },
+              ),
+            );
           } else {
             return Center(
               child: PlatformCircularProgressIndicator(
@@ -32,22 +47,6 @@ class Favourites extends StatelessWidget {
             );
           }
         },
-        child: Padding(
-          padding: EdgeInsets.only(
-            top: width * 0.01,
-            bottom: width * 0.01,
-          ),
-          child: ListView.builder(
-            itemCount: favouriteProvider.favourites.length,
-            itemBuilder: (context, index) {
-              return PartItem(
-                width: width,
-                part: favouriteProvider.favourites[index],
-                showDate: false,
-              );
-            },
-          ),
-        ),
       ),
     );
   }
