@@ -25,6 +25,8 @@ class ThemeTextField extends ThemeWidget<Widget> {
   final int maxLines;
   final bool enableBorder;
   final Color cursorColor;
+  final TextInputAction inputAction;
+  final Function(String) onSubmitted;
 
   ThemeTextField({
     this.controller,
@@ -48,6 +50,8 @@ class ThemeTextField extends ThemeWidget<Widget> {
     this.maxLines = 1,
     this.enableBorder = true,
     this.cursorColor = CupertinoColors.systemGrey,
+    this.inputAction,
+    this.onSubmitted,
     bool forceDark,
     bool forceIos,
     bool forceMaterial,
@@ -94,6 +98,8 @@ class ThemeTextField extends ThemeWidget<Widget> {
       forceIos: forceIos,
       forceMaterial: forceMaterial,
       enableBorder: enableBorder,
+      inputAction: inputAction,
+      onSubmitted: onSubmitted,
     );
   }
 
@@ -134,6 +140,8 @@ class ThemeTextField extends ThemeWidget<Widget> {
       cursorColor: cursorColor,
       forceIos: forceIos,
       forceMaterial: forceMaterial,
+      inputAction: inputAction,
+      onSubmitted: onSubmitted,
     );
   }
 }

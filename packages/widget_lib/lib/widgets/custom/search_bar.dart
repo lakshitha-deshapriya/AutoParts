@@ -4,18 +4,19 @@ import 'package:widget_lib/widgets/theme_widget/widgets/theme_text_filed.dart';
 
 class SearchBar extends StatelessWidget {
   final double screenWidth;
-  final TextEditingController controller;
+  final Function(String) onSubmitted;
 
-  const SearchBar({@required this.screenWidth, this.controller});
+  const SearchBar({@required this.screenWidth, this.onSubmitted});
 
   @override
   Widget build(BuildContext context) {
     return ThemeTextField(
-      controller: controller,
       radius: screenWidth * 0.02,
       insidePadding: screenWidth * 0.01,
       enableBorder: false,
       placeHolder: 'Search',
+      inputAction: TextInputAction.search,
+      onSubmitted: onSubmitted,
       lightPlaceHolderStyle: TextStyle(
         color: CupertinoColors.systemGrey,
         fontWeight: FontWeight.w400,

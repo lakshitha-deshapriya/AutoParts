@@ -65,7 +65,10 @@ class _PartsWidgetState extends State<PartsWidget> {
                   );
                 default:
                   return Padding(
-                    padding: EdgeInsets.only(top: width * 0.01),
+                    padding: EdgeInsets.only(
+                      top: width * 0.01,
+                      bottom: width * 0.01,
+                    ),
                     child: ListView.builder(
                       itemCount: snapshot.data.length,
                       itemBuilder: (context, index) {
@@ -84,6 +87,10 @@ class _PartsWidgetState extends State<PartsWidget> {
     );
   }
 
+  onSearchTextSubmitted(String searchText) {
+    print(searchText);
+  }
+
   Widget appBarTitle(double width) {
     return Row(
       children: [
@@ -91,7 +98,10 @@ class _PartsWidgetState extends State<PartsWidget> {
           height: width * 0.08,
           width: width * 0.865,
           padding: EdgeInsets.only(left: width * 0.01),
-          child: SearchBar(screenWidth: width),
+          child: SearchBar(
+            screenWidth: width,
+            onSubmitted: onSearchTextSubmitted,
+          ),
         ),
         GestureDetector(
           onTap: () {},

@@ -18,6 +18,8 @@ class PlatformTextField extends PlatformWidget<CupertinoTextField, TextField> {
   final TextStyle textStyle;
   final Color cursorColor;
   final bool enableBorder;
+  final TextInputAction inputAction;
+  final Function(String) onSubmitted;
 
   PlatformTextField({
     this.controller,
@@ -35,6 +37,8 @@ class PlatformTextField extends PlatformWidget<CupertinoTextField, TextField> {
     this.textStyle,
     this.cursorColor,
     this.enableBorder = true,
+    this.inputAction,
+    this.onSubmitted,
     bool forceMaterial,
     bool forceIos,
   }) : super(forceMaterial: forceMaterial, forceIos: forceIos);
@@ -72,6 +76,8 @@ class PlatformTextField extends PlatformWidget<CupertinoTextField, TextField> {
       autocorrect: false,
       style: textStyle,
       cursorColor: cursorColor,
+      textInputAction: inputAction,
+      onSubmitted: onSubmitted,
     );
   }
 
@@ -92,6 +98,8 @@ class PlatformTextField extends PlatformWidget<CupertinoTextField, TextField> {
       textAlign: TextAlign.start,
       style: textStyle,
       cursorColor: cursorColor,
+      textInputAction: inputAction,
+      onSubmitted: onSubmitted,
       decoration: BoxDecoration(
         color: fillColor,
         border: enableBorder ? Border.all(width: 0, color: borderColor) : null,
