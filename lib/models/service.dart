@@ -33,7 +33,7 @@ class Service {
     Timestamp enteredTimestamp = jsonData[enteredKey];
     Timestamp modifiedTimestamp = jsonData[modifiedKey];
     List<String> categories =
-        jsonData.containsKey(categoriesKey) ? jsonData[categoriesKey] : [];
+        jsonData.containsKey(categoriesKey) ? ( jsonData[categoriesKey] as List).map((str) => str.toString()).toList() : [];
 
     DateTime entered = DateTime.fromMicrosecondsSinceEpoch(
         enteredTimestamp.microsecondsSinceEpoch);

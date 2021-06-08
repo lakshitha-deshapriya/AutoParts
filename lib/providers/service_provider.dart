@@ -16,6 +16,7 @@ class ServiceProvider with ChangeNotifier {
     if (!_initialized) {
       QuerySnapshot _querySnapshot = await FirebaseFirestore.instance
           .collection(Constant.servicesCollection)
+          .where(Service.categoriesKey, arrayContainsAny: ['repair'])
           .orderBy(Constant.serviceInitialSort, descending: true)
           .limit(Constant.servicesLimit)
           .get();
