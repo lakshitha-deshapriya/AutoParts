@@ -73,8 +73,7 @@ class PlatformNavBarScaffold
       ),
       tabBuilder: (context, index) {
         return CupertinoTabView(
-          navigatorKey: screenData[index]
-              [1], //TODO: Needs to un comment this when release
+          // navigatorKey: screenData[index][1], //TODO: Needs to un comment this when release
           builder: (context) => screenData[index][0],
         );
       },

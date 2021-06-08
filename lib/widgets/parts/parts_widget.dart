@@ -5,6 +5,7 @@ import 'package:auto_parts/providers/parts_provider.dart';
 import 'package:auto_parts/widgets/parts/part_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:widget_lib/widget_lib.dart';
 
@@ -15,6 +16,7 @@ class PartsWidget extends StatefulWidget {
 
 class _PartsWidgetState extends State<PartsWidget> {
   StreamController streamController;
+  double prevScrollPoint = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +32,12 @@ class _PartsWidgetState extends State<PartsWidget> {
       cupertinoAppBar: CupertinoNavigationBar(middle: appBarTitle(width)),
       body: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
-          if (scrollInfo is ScrollUpdateNotification) {}
-          if (scrollInfo.metrics.maxScrollExtent == scrollInfo.metrics.pixels) {
-            partsProvider.getNextPage(streamController);
+          if (scrollInfo is UserScrollNotification) {
+            if ((scrollInfo).direction == ScrollDirection.reverse &&
+                scrollInfo.metrics.maxScrollExtent ==
+                    scrollInfo.metrics.pixels) {
+              partsProvider.getNextPage(streamController);
+            }
           }
           return true;
         },

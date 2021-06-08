@@ -1,4 +1,5 @@
 import 'package:auto_parts/utils/navigation_util.dart';
+import 'package:auto_parts/widgets/common/app_bar_title.dart';
 import 'package:auto_parts/widgets/favourites/favourite_parts.dart';
 import 'package:auto_parts/widgets/favourites/favourite_services.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,8 +24,9 @@ class Favourites extends StatelessWidget {
 
     return PlatformScaffold(
       topPadding: false,
-      appBar: AppBar(title: appBarTitle(width)),
-      cupertinoAppBar: CupertinoNavigationBar(middle: appBarTitle(width)),
+      appBar: AppBar(title: AppBarTittle(title: 'Favourites')),
+      cupertinoAppBar:
+          CupertinoNavigationBar(middle: AppBarTittle(title: 'Favourites')),
       body: Padding(
         padding: EdgeInsets.symmetric(
           vertical: width * 0.06,
