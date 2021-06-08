@@ -9,5 +9,9 @@ class Constant {
   static final int partsLimit = 5;
   static final String initialSort = 'modified';
 
+  static final String servicesCollection = 'parts';
+  static final int servicesLimit = 5;
+  static final String serviceInitialSort = 'modified';
+
   static final String dbName = 'auto-parts.db';
 }

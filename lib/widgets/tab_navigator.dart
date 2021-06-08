@@ -1,7 +1,8 @@
+import 'dart:developer';
+
 import 'package:auto_parts/constants/constant.dart';
 import 'package:auto_parts/providers/favourite_provider.dart';
 import 'package:auto_parts/providers/parts_provider.dart';
-import 'package:auto_parts/widgets/favourites/favourite_parts.dart';
 import 'package:auto_parts/widgets/favourites/favourites.dart';
 import 'package:auto_parts/widgets/parts/parts_widget.dart';
 import 'package:auto_parts/widgets/services/services.dart';
@@ -48,12 +49,12 @@ class TabNavigator extends StatelessWidget {
           label: 'Settings',
         ),
       ],
-      screens: [
-        PartsWidget(),
-        Services(),
-        Favourites(),
-        Settings(),
-      ],
+      screenData: {
+        0: [PartsWidget(), GlobalKey<NavigatorState>()],
+        1: [Services(), GlobalKey<NavigatorState>()],
+        2: [Service(), GlobalKey<NavigatorState>()],
+        3: [Settings(), GlobalKey<NavigatorState>()],
+      },
     );
   }
 }

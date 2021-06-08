@@ -22,10 +22,10 @@ class PlatformFlatButton extends PlatformWidget<Widget, Widget> {
   @override
   Widget createAndroidWidget(BuildContext context) {
     return Container(
+      padding: padding,
       height: height,
       width: width,
-      child: FlatButton(
-        padding: padding,
+      child: TextButton(
         child: child,
         onPressed: onPressed,
       ),

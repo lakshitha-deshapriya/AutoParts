@@ -6,7 +6,7 @@ import 'package:nav_bar_widget/src/platform_widget.dart';
 class PlatformNavBarScaffold
     extends PlatformWidget<CupertinoTabScaffold, Widget> {
   final List<BottomNavigationBarItem> barItems;
-  final List<Widget> screens;
+  final Map<int, List<dynamic>> screenData;
   final Color activeColor;
   final Color inactiveColor;
   final double iconSize;
@@ -14,7 +14,7 @@ class PlatformNavBarScaffold
 
   PlatformNavBarScaffold({
     @required this.barItems,
-    @required this.screens,
+    @required this.screenData,
     this.activeColor,
     this.inactiveColor = CupertinoColors.systemGrey,
     this.iconSize = 30.0,
@@ -27,20 +27,19 @@ class PlatformNavBarScaffold
 
   validate() {
     assert(this.barItems != null, 'Bar Items cannot be null');
-    assert(this.screens != null, 'Screens cannot be null');
-    assert(this.barItems.length == this.screens.length,
+    assert(this.screenData != null, 'Screens cannot be null');
+    assert(this.barItems.length == this.screenData.length,
         'Length of Bar items and Screens should match');
-  }
-
-  generateNavigationKeys(int amount) {
-    for (int i = 0; i < amount; i++) {
-      navigatorKeys.add(GlobalKey<NavigatorState>());
-    }
   }
 
   @override
   Widget createAndroidWidget(BuildContext context) {
     validate();
+
+    List<Widget> screens = [];
+    screenData.forEach((key, value) {
+      screens.add(value[0]);
+    });
 
     return NavBarAndroidScaffold(
       barItems: barItems,
@@ -56,8 +55,6 @@ class PlatformNavBarScaffold
   CupertinoTabScaffold createIosWidget(BuildContext context) {
     validate();
 
-    generateNavigationKeys(this.barItems.length);
-
     int currentIndex = 0;
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
@@ -68,15 +65,17 @@ class PlatformNavBarScaffold
         currentIndex: currentIndex,
         onTap: (index) {
           if (currentIndex == index) {
-            navigatorKeys[index].currentState.popUntil((r) => r.isFirst);
+            GlobalKey<NavigatorState> navigator = screenData[index][1];
+            navigator.currentState.popUntil((r) => r.isFirst);
           }
           currentIndex = index;
         },
       ),
       tabBuilder: (context, index) {
         return CupertinoTabView(
-          // navigatorKey: navigatorKeys[index], //TODO: Needs to uncomment when release
-          builder: (context) => screens[index],
+          navigatorKey: screenData[index]
+              [1], //TODO: Needs to un comment this when release
+          builder: (context) => screenData[index][0],
         );
       },
     );
