@@ -1,5 +1,7 @@
 import 'package:auto_parts/providers/meta_data_provider.dart';
+import 'package:auto_parts/utils/navigation_util.dart';
 import 'package:auto_parts/widgets/common/app_bar_title.dart';
+import 'package:auto_parts/widgets/services/category_service_list.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,13 @@ import 'package:provider/provider.dart';
 import 'package:widget_lib/widget_lib.dart';
 
 class Services extends StatelessWidget {
+  navigate(BuildContext context, int categoryId) {
+    NavigationUtil.navigatePush(
+      context,
+      CategoryServiceList(categoryId: categoryId),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
@@ -39,7 +48,8 @@ class Services extends StatelessWidget {
             itemCount: provider.serviceCategories.length,
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () => {},
+                onTap: () =>
+                    navigate(context, provider.serviceCategories[index].id),
                 child: Container(
                   child: Stack(
                     children: [
@@ -48,14 +58,25 @@ class Services extends StatelessWidget {
                         borderRadius: width * 0.05,
                         darkColor: Colors.white,
                         lightColor: Colors.grey,
-                        child: ColorFiltered(
-                          colorFilter: ColorFilter.mode(
-                              Colors.black.withOpacity(0.7), BlendMode.dstATop),
-                          child: FancyShimmerImage(
-                            imageUrl:
-                                provider.serviceCategories[index].coverUrl,
-                            boxFit: BoxFit.fitHeight,
-                          ),
+                        child: Stack(
+                          children: [
+                            FancyShimmerImage(
+                              imageUrl:
+                                  provider.serviceCategories[index].coverUrl,
+                              boxFit: BoxFit.fitHeight,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                gradient: RadialGradient(
+                                  stops: [0.3, 1],
+                                  colors: [
+                                    Colors.black.withOpacity(0.3),
+                                    Colors.transparent,
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       Center(

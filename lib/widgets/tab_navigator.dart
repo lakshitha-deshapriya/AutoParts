@@ -17,7 +17,6 @@ class TabNavigator extends StatelessWidget {
   void initData(BuildContext context) {
     context.read<PartsProvider>().init();
     context.read<FavouriteProvider>().init();
-    context.read<ServiceProvider>().init();
     context.read<MetaDataProvider>().init();
   }
 

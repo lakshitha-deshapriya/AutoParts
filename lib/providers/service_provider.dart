@@ -9,52 +9,25 @@ class ServiceProvider with ChangeNotifier {
   bool _initialized = false;
   bool _nextLoading = false;
 
-  List<Service> _services = [];
-  List<DocumentSnapshot> _snapshots = [];
+  Map<int, List<Service>> _serviceMap = {};
 
-  init() async {
-    if (!_initialized) {
+  initForCategory(int categoryId) async {
+    if (!_serviceMap.containsKey(categoryId)) {
       QuerySnapshot _querySnapshot = await FirebaseFirestore.instance
           .collection(Constant.servicesCollection)
-          .where(Service.categoriesKey, arrayContainsAny: ['repair'])
+          .where(Service.categoriesKey, arrayContainsAny: [categoryId])
           .orderBy(Constant.serviceInitialSort, descending: true)
           .limit(Constant.servicesLimit)
           .get();
 
-      _snapshots = _querySnapshot.docs;
+      List<QueryDocumentSnapshot> _snapshots = _querySnapshot.docs;
 
-      _snapshots.forEach((doc) {
-        _services.add(Service.fromJson(doc));
-      });
+      List<Service> services =
+          _snapshots.map((doc) => Service.fromJson(doc)).toList();
 
+      _serviceMap[categoryId] = services;
+      
       setInitialized(true);
-    }
-  }
-
-  getNextPage(StreamController controller) async {
-    if (!_nextLoading) {
-      _nextLoading = true;
-
-      QuerySnapshot _querySnapshot = await FirebaseFirestore.instance
-          .collection(Constant.servicesCollection)
-          .orderBy(Constant.serviceInitialSort, descending: true)
-          .startAfterDocument(_snapshots[_snapshots.length - 1])
-          .limit(Constant.servicesLimit)
-          .get();
-
-      _snapshots = _querySnapshot.docs;
-
-      if (_snapshots.length > 0) {
-        _snapshots.forEach((doc) {
-          _services.add(Service.fromJson(doc));
-        });
-
-        controller.add(_services);
-
-        if (_snapshots.length == Constant.servicesLimit) {
-          _nextLoading = false;
-        }
-      }
     }
   }
 
@@ -64,8 +37,8 @@ class ServiceProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  addDataToStream(StreamController streamController) {
-    streamController.add(_services);
+  addDataToStream(StreamController streamController, int categoryId) {
+    streamController.add(_serviceMap[categoryId]);
   }
 
   bool get hasNext => !_nextLoading;
