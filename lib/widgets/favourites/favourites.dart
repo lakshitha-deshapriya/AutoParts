@@ -74,7 +74,7 @@ class Favourites extends StatelessWidget {
             maxCrossAxisExtent: width * 0.45,
             childAspectRatio: 1,
             crossAxisSpacing: width * 0.07,
-            mainAxisSpacing: width * 0.02,
+            mainAxisSpacing: width * 0.07,
           ),
         ),
       ),

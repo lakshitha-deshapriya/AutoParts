@@ -1,5 +1,6 @@
 import 'package:auto_parts/providers/meta_data_provider.dart';
 import 'package:auto_parts/widgets/common/app_bar_title.dart';
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,34 +30,55 @@ class Services extends StatelessWidget {
           }
           return child;
         },
-        child: GridView.builder(
-          itemCount: provider.serviceCategories.length,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () => {},
-              child: Container(
-                child: Stack(
-                  children: [
-                    Center(
-                      child: ThemeText(
-                        provider.serviceCategories[index].category,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: width * 0.08,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: width * 0.06,
+            horizontal: width * 0.06,
+          ),
+          child: GridView.builder(
+            itemCount: provider.serviceCategories.length,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () => {},
+                child: Container(
+                  child: Stack(
+                    children: [
+                      ThemeBorderContainer(
+                        borderWidth: width * 0.005,
+                        borderRadius: width * 0.05,
+                        darkColor: Colors.white,
+                        lightColor: Colors.grey,
+                        child: ColorFiltered(
+                          colorFilter: ColorFilter.mode(
+                              Colors.black.withOpacity(0.7), BlendMode.dstATop),
+                          child: FancyShimmerImage(
+                            imageUrl:
+                                provider.serviceCategories[index].coverUrl,
+                            boxFit: BoxFit.fitHeight,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                      Center(
+                        child: ThemeText(
+                          provider.serviceCategories[index].category,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: width * 0.08,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
-          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: width * 0.45,
-            childAspectRatio: 1,
-            crossAxisSpacing: width * 0.07,
-            mainAxisSpacing: width * 0.02,
+              );
+            },
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: width * 0.45,
+              childAspectRatio: 1,
+              crossAxisSpacing: width * 0.07,
+              mainAxisSpacing: width * 0.07,
+            ),
           ),
         ),
       ),
