@@ -103,7 +103,7 @@ class ServiceItem extends StatelessWidget {
           height: width * 0.01,
         ),
         ThemeText(
-          getCategories(metaData, service.categories),
+          getCategories(metaData, service),
           softWrap: false,
           overflow: TextOverflow.fade,
           style: TextStyle(
@@ -116,7 +116,9 @@ class ServiceItem extends StatelessWidget {
     );
   }
 
-  getCategories(MetaDataProvider metaData, List<int> categories) {
+  getCategories(MetaDataProvider metaData, Service service) {
+    final List<int> categories =
+        service.categories.map((category) => category.category).toList();
     return metaData.serviceCategories
         .where((category) => categories.contains(category.id))
         .map((category) => category.category)

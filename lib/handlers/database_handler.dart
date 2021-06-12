@@ -4,6 +4,9 @@ import 'package:auto_parts/constants/constant.dart';
 import 'package:auto_parts/models/part.dart';
 import 'package:auto_parts/models/part_image.dart';
 import 'package:auto_parts/models/savable.dart';
+import 'package:auto_parts/models/service.dart';
+import 'package:auto_parts/models/service_category_data.dart';
+import 'package:auto_parts/models/service_image.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -15,7 +18,7 @@ class DatabaseHandler {
       Directory directory = await getApplicationDocumentsDirectory();
       String path = directory.path + Constant.dbName;
       _database = await openDatabase(path,
-          version: 2, onCreate: _createDb, onUpgrade: _upgradeDb);
+          version: 3, onCreate: _createDb, onUpgrade: _upgradeDb);
     }
     return _database;
   }
@@ -26,6 +29,15 @@ class DatabaseHandler {
 
     String partImageSql = PartImage.getOnCreateSql();
     await db.execute(partImageSql);
+
+    String serviceSql = Service.getOnCreateSql();
+    await db.execute(serviceSql);
+
+    String serviceImageSql = ServiceImage.getOnCreateSql();
+    await db.execute(serviceImageSql);
+
+    String serviceCategoryDataSql = ServiceCategoryData.getOnCreateSql();
+    await db.execute(serviceCategoryDataSql);
   }
 
   void _upgradeDb(Database db, int oldVersion, int newVersion) async {
