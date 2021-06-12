@@ -1,8 +1,8 @@
 import 'package:auto_parts/providers/meta_data_provider.dart';
 import 'package:auto_parts/utils/navigation_util.dart';
 import 'package:auto_parts/widgets/common/app_bar_title.dart';
+import 'package:auto_parts/widgets/common/blurred_image_load.dart';
 import 'package:auto_parts/widgets/services/category_service_list.dart';
-import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -58,25 +58,8 @@ class Services extends StatelessWidget {
                         borderRadius: width * 0.05,
                         darkColor: Colors.white,
                         lightColor: Colors.grey,
-                        child: Stack(
-                          children: [
-                            FancyShimmerImage(
-                              imageUrl:
-                                  provider.serviceCategories[index].coverUrl,
-                              boxFit: BoxFit.fitHeight,
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                gradient: RadialGradient(
-                                  stops: [0.3, 1],
-                                  colors: [
-                                    Colors.black.withOpacity(0.3),
-                                    Colors.transparent,
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
+                        child: BlurredImageLoad(
+                          imageUrl: provider.serviceCategories[index].coverUrl,
                         ),
                       ),
                       Center(

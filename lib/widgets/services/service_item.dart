@@ -1,9 +1,6 @@
-import 'package:auto_parts/models/part.dart';
 import 'package:auto_parts/models/service.dart';
-import 'package:auto_parts/models/service_category.dart';
 import 'package:auto_parts/providers/meta_data_provider.dart';
-import 'package:auto_parts/widgets/common/favourite_icon.dart';
-import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
+import 'package:auto_parts/widgets/common/Image_load.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:widget_lib/widget_lib.dart';
@@ -47,7 +44,11 @@ class ServiceItem extends StatelessWidget {
                 Container(
                   width: width * 0.3,
                   padding: EdgeInsets.symmetric(horizontal: width * 0.02),
-                  child: loadImage(service, width),
+                  child: ImageLoad(
+                    coverUrl: service.coverUrl,
+                    borderWidth: width * 0.003,
+                    borderRadius: width * 0.01,
+                  ),
                 ),
                 Container(
                   width: width * 0.65,
@@ -68,27 +69,6 @@ class ServiceItem extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget loadImage(Service service, double width) {
-    bool hasCover = service.coverUrl.isNotEmpty;
-    return AspectRatio(
-      aspectRatio: 1 / 1,
-      child: ThemeBorderContainer(
-        borderWidth: width * 0.003,
-        borderRadius: width * 0.01,
-        darkColor: Colors.white,
-        lightColor: Colors.grey,
-        child: hasCover
-            ? FancyShimmerImage(
-                imageUrl: service.coverUrl,
-              )
-            : Image.asset(
-                'assets/images/default_part.jpg',
-                fit: BoxFit.cover,
-              ),
       ),
     );
   }

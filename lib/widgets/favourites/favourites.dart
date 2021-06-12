@@ -1,5 +1,6 @@
 import 'package:auto_parts/utils/navigation_util.dart';
 import 'package:auto_parts/widgets/common/app_bar_title.dart';
+import 'package:auto_parts/widgets/common/blurred_image_load.dart';
 import 'package:auto_parts/widgets/favourites/favourite_parts.dart';
 import 'package:auto_parts/widgets/favourites/favourite_services.dart';
 import 'package:flutter/cupertino.dart';
@@ -45,24 +46,8 @@ class Favourites extends StatelessWidget {
                       borderRadius: width * 0.05,
                       darkColor: Colors.white,
                       lightColor: Colors.grey,
-                      child: Stack(
-                        children: [
-                          Image.asset(
-                            categoryData[index][2],
-                            fit: BoxFit.cover,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              gradient: RadialGradient(
-                                stops: [0.3, 1],
-                                colors: [
-                                  Colors.black.withOpacity(0.3),
-                                  Colors.transparent,
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+                      child: BlurredImageLoad(
+                        assetImagePath: categoryData[index][2],
                       ),
                     ),
                     Center(
