@@ -103,7 +103,7 @@ class FavouriteProvider with ChangeNotifier {
     _favouriteServices.remove(service);
     _favouriteServiceIds.remove(service.id);
 
-    setNewFavouritePartId('changed ' + service.id);
+    setNewFavouriteServiceId('changed ' + service.id);
   }
 
   insertPartToDb(Part part) async {
