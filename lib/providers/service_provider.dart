@@ -7,9 +7,12 @@ import 'package:flutter/material.dart';
 
 class ServiceProvider with ChangeNotifier {
   bool _initialized = false;
-  bool _nextLoading = false;
+
+  String _intializedServiceCategory = '';
 
   Map<int, List<Service>> _serviceMap = {};
+  Map<int, List<QueryDocumentSnapshot>> _snapshotMap = {};
+  Map<int, bool> _nextLoadingMap = {};
 
   initForCategory(int categoryId) async {
     if (!_serviceMap.containsKey(categoryId)) {
@@ -20,14 +23,48 @@ class ServiceProvider with ChangeNotifier {
           .limit(Constant.servicesLimit)
           .get();
 
-      List<QueryDocumentSnapshot> _snapshots = _querySnapshot.docs;
+      List<QueryDocumentSnapshot> snapshots = _querySnapshot.docs;
 
       List<Service> services =
-          _snapshots.map((doc) => Service.fromJson(doc)).toList();
+          snapshots.map((doc) => Service.fromJson(doc)).toList();
 
       _serviceMap[categoryId] = services;
-      
-      setInitialized(true);
+      _snapshotMap[categoryId] = snapshots;
+
+      _nextLoadingMap[categoryId] = snapshots.length != Constant.servicesLimit;
+
+      setInitializedCategoryKey(categoryId);
+    }
+  }
+
+  getNextPage(StreamController controller, int categoryId) async {
+    if (!_nextLoadingMap.containsKey(categoryId)) {
+      _nextLoadingMap[categoryId] = true;
+
+      List<QueryDocumentSnapshot> snapshots = _snapshotMap[categoryId];
+
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection(Constant.partsCollection)
+          .orderBy(Constant.initialSort, descending: true)
+          .startAfterDocument(snapshots[snapshots.length - 1])
+          .limit(Constant.partsLimit)
+          .get();
+
+      List<QueryDocumentSnapshot> nextSnapshots = querySnapshot.docs;
+
+      if (nextSnapshots.length > 0) {
+        List<Service> newServices =
+            nextSnapshots.map((doc) => Service.fromJson(doc)).toList();
+
+        _serviceMap[categoryId].addAll(newServices);
+        _snapshotMap[categoryId].addAll(nextSnapshots);
+
+        controller.add(_serviceMap[categoryId]);
+
+        if (nextSnapshots.length == Constant.servicesLimit) {
+          _nextLoadingMap[categoryId] = false;
+        }
+      }
     }
   }
 
@@ -37,9 +74,18 @@ class ServiceProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  bool isCategoryInitialized(int categoryId) {
+    return _serviceMap.containsKey(categoryId);
+  }
+
+  String get initializedCategoryKey => _intializedServiceCategory;
+  setInitializedCategoryKey(int categoryId) {
+    _intializedServiceCategory = categoryId.toString();
+    notifyListeners();
+  }
+
   addDataToStream(StreamController streamController, int categoryId) {
     streamController.add(_serviceMap[categoryId]);
   }
 
-  bool get hasNext => !_nextLoading;
 }
