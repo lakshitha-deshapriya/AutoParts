@@ -1,6 +1,7 @@
 import 'package:auto_parts/models/service.dart';
 import 'package:auto_parts/providers/meta_data_provider.dart';
 import 'package:auto_parts/widgets/common/Image_load.dart';
+import 'package:auto_parts/widgets/common/service_favourite_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:widget_lib/widget_lib.dart';
@@ -90,12 +91,12 @@ class ServiceItem extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            // FavouriteIcon(
-            //   part: part,
-            //   iconSize: width * 0.055,
-            //   enableAction: enableFavouriteAction,
-            //   showInactive: false,
-            // ),
+            ServiceFavouriteIcon(
+              service: service,
+              iconSize: width * 0.055,
+              enableAction: true,
+              showInactive: true,
+            ),
           ],
         ),
         SizedBox(

@@ -1,13 +1,19 @@
 import 'package:auto_parts/handlers/database_handler.dart';
 import 'package:auto_parts/models/part.dart';
 import 'package:auto_parts/models/part_image.dart';
+import 'package:auto_parts/models/service.dart';
 import 'package:flutter/material.dart';
 
 class FavouriteProvider with ChangeNotifier {
   List<Part> _favouriteParts = [];
   Set<String> _favouritePartIds = {};
+
+  List<Service> _favouriteServices = [];
+  Set<String> _favouriteServiceIds = {};
+
   bool _initialized = false;
   String _newFavouritePartId = '';
+  String _newFavouriteServiceId = '';
 
   init() async {
     loadFavourites();
@@ -40,14 +46,26 @@ class FavouriteProvider with ChangeNotifier {
 
   List<Part> get favouriteParts => _favouriteParts;
 
+  List<Service> get favouriteServices => _favouriteServices;
+
   String get newFavouritePartId => _newFavouritePartId;
   setNewFavouritePartId(String id) {
     _newFavouritePartId = id;
     notifyListeners();
   }
 
+  String get newFavouriteServiceId => _newFavouriteServiceId;
+  setNewFavouriteServiceId(String id) {
+    _newFavouriteServiceId = id;
+    notifyListeners();
+  }
+
   bool isFavouritePart(String id) {
     return _favouritePartIds.contains(id);
+  }
+
+  bool isFavouriteService(String id) {
+    return _favouriteServiceIds.contains(id);
   }
 
   addToFavouriteParts(Part part) async {
@@ -58,12 +76,34 @@ class FavouriteProvider with ChangeNotifier {
     setNewFavouritePartId(part.id);
   }
 
+  addToFavouriteServices(Service service) async {
+    // await insertPartToDb(part); //TODO:Implement db logic
+
+    // await loadFavourites();
+
+    _favouriteServices.add(service);
+    _favouriteServiceIds.add(service.id);
+
+    setNewFavouriteServiceId(service.id);
+  }
+
   removeFromFavouriteParts(Part part) async {
     await removePartFromDb(part);
 
     await loadFavourites();
 
-    setNewFavouritePartId('changed');
+    setNewFavouritePartId('changed' + part.id);
+  }
+
+  removeFromFavouriteServices(Service service) async {
+    // await removePartFromDb(part); //TODO: implent db flow
+
+    // await loadFavourites();
+
+    _favouriteServices.remove(service);
+    _favouriteServiceIds.remove(service.id);
+
+    setNewFavouritePartId('changed ' + service.id);
   }
 
   insertPartToDb(Part part) async {

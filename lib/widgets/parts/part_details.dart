@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:auto_parts/models/part.dart';
-import 'package:auto_parts/widgets/common/favourite_icon.dart';
+import 'package:auto_parts/widgets/common/part_favourite_icon.dart';
 import 'package:auto_parts/widgets/common/google_map_show.dart';
 import 'package:auto_parts/widgets/common/image_carousol.dart';
 import 'package:auto_parts/widgets/common/indented_data_row.dart';
@@ -125,7 +125,7 @@ class PartDetails extends StatelessWidget {
                 ? Colors.transparent
                 : Colors.white,
             actions: [
-              FavouriteIcon(part: part),
+              PartFavouriteIcon(part: part),
             ],
           )
         : null;
@@ -135,7 +135,7 @@ class PartDetails extends StatelessWidget {
     return Platform.isIOS
         ? CupertinoNavigationBar(
             backgroundColor: Colors.transparent,
-            trailing: FavouriteIcon(part: part),
+            trailing: PartFavouriteIcon(part: part),
           )
         : null;
   }

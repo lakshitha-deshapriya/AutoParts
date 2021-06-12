@@ -1,6 +1,6 @@
 import 'package:auto_parts/models/part.dart';
 import 'package:auto_parts/utils/navigation_util.dart';
-import 'package:auto_parts/widgets/common/favourite_icon.dart';
+import 'package:auto_parts/widgets/common/part_favourite_icon.dart';
 import 'package:auto_parts/widgets/parts/part_details.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
@@ -114,7 +114,7 @@ class PartItem extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            FavouriteIcon(
+            PartFavouriteIcon(
               part: part,
               iconSize: width * 0.055,
               enableAction: enableFavouriteAction,
