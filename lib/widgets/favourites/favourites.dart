@@ -45,14 +45,24 @@ class Favourites extends StatelessWidget {
                       borderRadius: width * 0.05,
                       darkColor: Colors.white,
                       lightColor: Colors.grey,
-                      child: ColorFiltered(
-                        colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(categoryData[index][3]),
-                            BlendMode.dstATop),
-                        child: Image.asset(
-                          categoryData[index][2],
-                          fit: BoxFit.cover,
-                        ),
+                      child: Stack(
+                        children: [
+                          Image.asset(
+                            categoryData[index][2],
+                            fit: BoxFit.cover,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              gradient: RadialGradient(
+                                stops: [0.3, 1],
+                                colors: [
+                                  Colors.black.withOpacity(0.3),
+                                  Colors.transparent,
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     Center(

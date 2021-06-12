@@ -6,7 +6,7 @@ class Service {
   String coverUrl;
   DateTime entered;
   DateTime modified;
-  List<String> categories;
+  List<int> categories;
 
   Service({
     this.id,
@@ -32,8 +32,8 @@ class Service {
     String coverUrl = jsonData[coverUrlKey]?.toString() ?? '';
     Timestamp enteredTimestamp = jsonData[enteredKey];
     Timestamp modifiedTimestamp = jsonData[modifiedKey];
-    List<String> categories =
-        jsonData.containsKey(categoriesKey) ? ( jsonData[categoriesKey] as List).map((str) => str.toString()).toList() : [];
+    List<int> categories =
+        jsonData.containsKey(categoriesKey) ? ( jsonData[categoriesKey] as List).map((id) => int.parse(id.toString())).toList() : [];
 
     DateTime entered = DateTime.fromMicrosecondsSinceEpoch(
         enteredTimestamp.microsecondsSinceEpoch);

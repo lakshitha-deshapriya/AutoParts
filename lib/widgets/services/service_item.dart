@@ -1,8 +1,11 @@
 import 'package:auto_parts/models/part.dart';
 import 'package:auto_parts/models/service.dart';
+import 'package:auto_parts/models/service_category.dart';
+import 'package:auto_parts/providers/meta_data_provider.dart';
 import 'package:auto_parts/widgets/common/favourite_icon.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:widget_lib/widget_lib.dart';
 
 class ServiceItem extends StatelessWidget {
@@ -18,20 +21,13 @@ class ServiceItem extends StatelessWidget {
     this.enableFavouriteAction = false,
   });
 
-  getSubString(Part part) {
-    String str = part.brand + ', ' + part.model;
-    if (part.year.isNotEmpty) {
-      str += ' (' + part.year + ')';
-    }
-    return str;
-  }
-
   navigate(BuildContext context) {
     // NavigationUtil.navigatePush(context, PartDetails(part: part));
   }
 
   @override
   Widget build(BuildContext context) {
+    final MetaDataProvider metaData = context.read<MetaDataProvider>();
     return Container(
       height: width * 0.3,
       padding: EdgeInsets.symmetric(
@@ -62,7 +58,7 @@ class ServiceItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      getTitleAndSubtitle(service, width),
+                      getTitleAndCategories(service, width, metaData),
                       Text(''), //Needs to add the organization name
                       getPriceAndPostedDate(service, showDate),
                     ],
@@ -97,7 +93,8 @@ class ServiceItem extends StatelessWidget {
     );
   }
 
-  Widget getTitleAndSubtitle(Service service, double width) {
+  Widget getTitleAndCategories(
+      Service service, double width, MetaDataProvider metaData) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -121,8 +118,28 @@ class ServiceItem extends StatelessWidget {
             // ),
           ],
         ),
+        SizedBox(
+          height: width * 0.01,
+        ),
+        ThemeText(
+          getCategories(metaData, service.categories),
+          softWrap: false,
+          overflow: TextOverflow.fade,
+          style: TextStyle(
+            color: Colors.grey,
+            fontSize: width * 0.038,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
       ],
     );
+  }
+
+  getCategories(MetaDataProvider metaData, List<int> categories) {
+    return metaData.serviceCategories
+        .where((category) => categories.contains(category.id))
+        .map((category) => category.category)
+        .join(', ');
   }
 
   getPriceAndPostedDate(Service service, bool showDate) {
@@ -139,10 +156,7 @@ class ServiceItem extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // ThemeText(
-        //   service.cur + ' ' + service.price.toString(),
-        //   style: TextStyle(fontWeight: FontWeight.bold),
-        // ),
+        Container(), //TODO: Add the place
         Visibility(
           visible: showDate,
           child: ThemeText(
