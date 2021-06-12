@@ -1,5 +1,6 @@
 import 'package:auto_parts/models/part.dart';
 import 'package:auto_parts/utils/navigation_util.dart';
+import 'package:auto_parts/widgets/common/Image_load.dart';
 import 'package:auto_parts/widgets/common/part_favourite_icon.dart';
 import 'package:auto_parts/widgets/parts/part_details.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
@@ -52,7 +53,11 @@ class PartItem extends StatelessWidget {
                 Container(
                   width: width * 0.3,
                   padding: EdgeInsets.symmetric(horizontal: width * 0.02),
-                  child: loadImage(part, width),
+                  child: ImageLoad(
+                    coverUrl: part.coverUrl,
+                    borderRadius: width * 0.01,
+                    borderWidth: width * 0.003,
+                  ),
                 ),
                 Container(
                   width: width * 0.65,
@@ -73,27 +78,6 @@ class PartItem extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget loadImage(Part part, double width) {
-    bool hasCover = part.coverUrl.isNotEmpty;
-    return AspectRatio(
-      aspectRatio: 1 / 1,
-      child: ThemeBorderContainer(
-        borderWidth: width * 0.003,
-        borderRadius: width * 0.01,
-        darkColor: Colors.white,
-        lightColor: Colors.grey,
-        child: hasCover
-            ? FancyShimmerImage(
-                imageUrl: part.coverUrl,
-              )
-            : Image.asset(
-                'assets/images/default_part.jpg',
-                fit: BoxFit.cover,
-              ),
       ),
     );
   }

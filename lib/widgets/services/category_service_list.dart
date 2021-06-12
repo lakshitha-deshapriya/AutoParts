@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:auto_parts/models/service.dart';
 import 'package:auto_parts/providers/service_provider.dart';
 import 'package:auto_parts/widgets/common/app_bar_title_with_search.dart';
+import 'package:auto_parts/widgets/common/custom_progress_indicator.dart';
 import 'package:auto_parts/widgets/services/service_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -61,11 +62,7 @@ class _CategoryServiceListState extends State<CategoryServiceList> {
                   streamController, widget.categoryId);
               return child;
             } else {
-              return Center(
-                child: PlatformCircularProgressIndicator(
-                  height: width * 0.3,
-                ),
-              );
+              return CustomProgressIndicator();
             }
           },
           child: StreamBuilder<List<Service>>(
@@ -76,11 +73,7 @@ class _CategoryServiceListState extends State<CategoryServiceList> {
                 return new Text('Error: ${snapshot.error}');
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
-                  return Center(
-                    child: PlatformCircularProgressIndicator(
-                      height: width * 0.3,
-                    ),
-                  );
+                  return CustomProgressIndicator();
                 default:
                   return Padding(
                     padding: EdgeInsets.only(

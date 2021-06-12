@@ -2,6 +2,7 @@ import 'package:auto_parts/providers/meta_data_provider.dart';
 import 'package:auto_parts/utils/navigation_util.dart';
 import 'package:auto_parts/widgets/common/app_bar_title.dart';
 import 'package:auto_parts/widgets/common/blurred_image_load.dart';
+import 'package:auto_parts/widgets/common/custom_progress_indicator.dart';
 import 'package:auto_parts/widgets/services/category_service_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,11 +32,7 @@ class Services extends StatelessWidget {
         selector: (_, provider) => provider.isInitialized,
         builder: (_, initialized, child) {
           if (!initialized) {
-            return Center(
-              child: PlatformCircularProgressIndicator(
-                height: width * 0.3,
-              ),
-            );
+            return CustomProgressIndicator();
           }
           return child;
         },

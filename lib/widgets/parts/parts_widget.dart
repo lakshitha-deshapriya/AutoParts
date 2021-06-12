@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:auto_parts/models/part.dart';
 import 'package:auto_parts/providers/parts_provider.dart';
 import 'package:auto_parts/widgets/common/app_bar_title_with_search.dart';
+import 'package:auto_parts/widgets/common/custom_progress_indicator.dart';
 import 'package:auto_parts/widgets/parts/part_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -56,11 +57,7 @@ class _PartsWidgetState extends State<PartsWidget> {
               partsProvider.addDataToStream(streamController);
               return child;
             } else {
-              return Center(
-                child: PlatformCircularProgressIndicator(
-                  height: width * 0.3,
-                ),
-              );
+              return CustomProgressIndicator();
             }
           },
           child: StreamBuilder<List<Part>>(
@@ -71,11 +68,7 @@ class _PartsWidgetState extends State<PartsWidget> {
                 return new Text('Error: ${snapshot.error}');
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
-                  return Center(
-                    child: PlatformCircularProgressIndicator(
-                      height: width * 0.3,
-                    ),
-                  );
+                  return CustomProgressIndicator();
                 default:
                   return Padding(
                     padding: EdgeInsets.only(

@@ -1,5 +1,6 @@
 import 'package:auto_parts/providers/favourite_provider.dart';
 import 'package:auto_parts/widgets/common/app_bar_title_with_search.dart';
+import 'package:auto_parts/widgets/common/custom_progress_indicator.dart';
 import 'package:auto_parts/widgets/parts/part_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -57,11 +58,7 @@ class FavouriteParts extends StatelessWidget {
               ),
             );
           } else {
-            return Center(
-              child: PlatformCircularProgressIndicator(
-                height: width * 0.3,
-              ),
-            );
+            return CustomProgressIndicator();
           }
         },
       ),

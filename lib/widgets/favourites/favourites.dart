@@ -75,14 +75,4 @@ class Favourites extends StatelessWidget {
       ),
     );
   }
-
-  Widget appBarTitle(double width) {
-    return ThemeText(
-      'Favourites',
-      style: TextStyle(
-        fontWeight: FontWeight.w500,
-        fontSize: width * 0.05,
-      ),
-    );
-  }
 }
