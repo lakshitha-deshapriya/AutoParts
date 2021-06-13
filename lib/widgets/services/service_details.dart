@@ -1,25 +1,23 @@
-import 'dart:io';
-
 import 'package:auto_parts/constants/constant.dart';
 import 'package:auto_parts/models/part.dart';
-import 'package:auto_parts/widgets/common/part_favourite_icon.dart';
+import 'package:auto_parts/models/service.dart';
 import 'package:auto_parts/widgets/common/google_map_show.dart';
 import 'package:auto_parts/widgets/common/image_carousol.dart';
-import 'package:auto_parts/widgets/common/indented_data_row.dart';
+import 'package:auto_parts/widgets/common/service_favourite_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:widget_lib/widget_lib.dart';
 import 'package:widget_lib/widgets/utils/widget_util.dart';
 
-class PartDetails extends StatelessWidget {
-  final Part part;
+class ServiceDetails extends StatelessWidget {
+  final Service service;
 
-  const PartDetails({@required this.part});
+  const ServiceDetails({@required this.service});
 
   @override
   Widget build(BuildContext context) {
     final List<String> images =
-        part.images.map((image) => image.imageUrl).toList();
+        service.images.map((image) => image.imageUrl).toList();
 
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
@@ -30,7 +28,7 @@ class PartDetails extends StatelessWidget {
         cupertinoAppBar: getCupertinoNavigationBar(),
         body: SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: width * 0.03),
+            padding: EdgeInsets.symmetric(vertical: width * 0.035),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,7 +45,7 @@ class PartDetails extends StatelessWidget {
                       bottom: width * 0.02,
                     ),
                     child: ThemeText(
-                      part.name,
+                      service.name,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: width * 0.048,
@@ -69,14 +67,13 @@ class PartDetails extends StatelessWidget {
                       ),
                     ),
                   ),
-                  ...getIndentedData(width),
                   Container(
                     padding: EdgeInsets.symmetric(
                       vertical: width * 0.02,
                       horizontal: width * 0.05,
                     ),
                     child: ThemeText(
-                      part.description,
+                      service.description,
                       softWrap: true,
                       overflow: TextOverflow.fade,
                       darkColor: CupertinoColors.systemGrey4,
@@ -85,7 +82,7 @@ class PartDetails extends StatelessWidget {
                       ),
                     ),
                   ),
-                  loadGoogleMapWidget(part, width),
+                  loadGoogleMapWidget(service, width),
                 ],
               ),
             ),
@@ -95,13 +92,13 @@ class PartDetails extends StatelessWidget {
     );
   }
 
-  loadGoogleMapWidget(Part part, double width) {
+  loadGoogleMapWidget(Service service, double width) {
     bool showMap = false;
     double latitude;
     double longitude;
-    if (part.location != null && part.location.isNotEmpty) {
+    if (service.location != null && service.location.isNotEmpty) {
       showMap = true;
-      List<String> location = part.location.split(',');
+      List<String> location = service.location.split(',');
       latitude = double.parse(location[0].trim());
       longitude = double.parse(location[1].trim());
     }
@@ -123,73 +120,19 @@ class PartDetails extends StatelessWidget {
   }
 
   AppBar getAppBar(BuildContext context) {
-    return Platform.isAndroid
-        ? AppBar(
-            backgroundColor: WidgetUtil.isDarkMode(context)
-                ? Colors.transparent
-                : Colors.white,
-            actions: [
-              PartFavouriteIcon(part: part),
-            ],
-          )
-        : null;
+    return AppBar(
+      backgroundColor:
+          WidgetUtil.isDarkMode(context) ? Colors.transparent : Colors.white,
+      actions: [
+        ServiceFavouriteIcon(service: service),
+      ],
+    );
   }
 
   CupertinoNavigationBar getCupertinoNavigationBar() {
-    return Platform.isIOS
-        ? CupertinoNavigationBar(
-            backgroundColor: Colors.transparent,
-            trailing: PartFavouriteIcon(part: part),
-          )
-        : null;
-  }
-
-  List<Widget> getIndentedData(double width) {
-    final EdgeInsets padding = EdgeInsets.symmetric(
-      vertical: width * 0.02,
-      horizontal: width * 0.05,
+    return CupertinoNavigationBar(
+      backgroundColor: Colors.transparent,
+      trailing: ServiceFavouriteIcon(service: service),
     );
-    return [
-      Container(
-        padding: padding,
-        child: IndentedDataRow(
-          first: 'Brand',
-          second: part.brand,
-          screenWidth: width,
-        ),
-      ),
-      Container(
-        padding: padding,
-        child: IndentedDataRow(
-          first: 'Model',
-          second: part.model,
-          screenWidth: width,
-        ),
-      ),
-      Container(
-        padding: padding,
-        child: IndentedDataRow(
-          first: 'Year',
-          second: part.year,
-          screenWidth: width,
-        ),
-      ),
-      Container(
-        padding: padding,
-        child: IndentedDataRow(
-          first: 'Condition',
-          second: part.condition,
-          screenWidth: width,
-        ),
-      ),
-      Container(
-        padding: padding,
-        child: IndentedDataRow(
-          first: 'Price',
-          second: part.cur + ' ' + part.price.toString(),
-          screenWidth: width,
-        ),
-      ),
-    ];
   }
 }

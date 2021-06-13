@@ -21,4 +21,7 @@ class Constant {
   static final String metaDataCollection = 'meta-data';
   static final String metaDataKey = 'meta-data';
   static final String serviceCatKey = 'serviceCategories';
+
+  //Google maps config
+  static final double initialZoom = 15;
 }

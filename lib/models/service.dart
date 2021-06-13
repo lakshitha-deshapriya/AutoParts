@@ -11,6 +11,8 @@ class Service extends Savable {
   String coverUrl;
   DateTime entered;
   DateTime modified;
+  String description;
+  String location;
   List<ServiceImage> images;
   List<ServiceCategoryData> categories;
 
@@ -20,6 +22,8 @@ class Service extends Savable {
     this.coverUrl,
     this.entered,
     this.modified,
+    this.description,
+    this.location,
     this.images,
     this.categories,
   });
@@ -29,6 +33,8 @@ class Service extends Savable {
   static final coverUrlKey = 'cover';
   static final enteredKey = 'entered';
   static final modifiedKey = 'modified';
+  static final descriptionKey = 'desc';
+  static final locationKey = 'location';
   static final categoriesKey = 'category';
   static final imagesKey = 'images';
 
@@ -37,6 +43,8 @@ class Service extends Savable {
   static final String coverUrlCol = 'COVER_URL';
   static final String enteredCol = 'ENTERED';
   static final String modifiedCol = 'MODIFIED';
+  static final String descriptionCol = 'DESCRIPTION';
+  static final String locationCol = 'LOCATION';
 
   static final Map<String, String> colMap = {
     idCol: 'TEXT PRIMARY KEY',
@@ -44,6 +52,8 @@ class Service extends Savable {
     coverUrlCol: 'TEXT',
     enteredCol: 'INTEGER',
     modifiedCol: 'INTEGER',
+    descriptionCol: 'TEXT',
+    locationCol: 'TEXT',
   };
 
   factory Service.fromJson(QueryDocumentSnapshot json) {
@@ -64,6 +74,8 @@ class Service extends Savable {
             .map((category) => ServiceCategoryData(id: id, category: int.parse(category.toString())))
             .toList()
         : [];
+    String description = jsonData[descriptionKey]?.toString() ?? '';
+    String location = jsonData[locationKey]?.toString() ?? '';
 
     DateTime entered = DateTime.fromMicrosecondsSinceEpoch(
         enteredTimestamp.microsecondsSinceEpoch);
@@ -76,6 +88,8 @@ class Service extends Savable {
       coverUrl: coverUrl,
       entered: entered,
       modified: modified,
+      description: description,
+      location: location,
       images: images,
       categories: categories,
     );
@@ -119,6 +133,8 @@ class Service extends Savable {
     map[coverUrlCol] = coverUrl;
     map[enteredCol] = entered.millisecondsSinceEpoch;
     map[modifiedCol] = modified.millisecondsSinceEpoch;
+    map[descriptionCol] = description;
+    map[locationCol] = location;
     return map;
   }
 
@@ -129,6 +145,8 @@ class Service extends Savable {
       coverUrl: map[coverUrlCol],
       entered: DateTime.fromMillisecondsSinceEpoch(map[enteredCol]),
       modified: DateTime.fromMillisecondsSinceEpoch(map[modifiedCol]),
+      description: map[descriptionCol],
+      location: map[locationCol],
     );
   }
 }

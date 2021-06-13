@@ -1,7 +1,9 @@
 import 'package:auto_parts/models/service.dart';
 import 'package:auto_parts/providers/meta_data_provider.dart';
+import 'package:auto_parts/utils/navigation_util.dart';
 import 'package:auto_parts/widgets/common/Image_load.dart';
 import 'package:auto_parts/widgets/common/service_favourite_icon.dart';
+import 'package:auto_parts/widgets/services/service_details.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:widget_lib/widget_lib.dart';
@@ -20,7 +22,7 @@ class ServiceItem extends StatelessWidget {
   });
 
   navigate(BuildContext context) {
-    // NavigationUtil.navigatePush(context, PartDetails(part: part));
+    NavigationUtil.navigatePush(context, ServiceDetails(service: service));
   }
 
   @override
@@ -62,7 +64,7 @@ class ServiceItem extends StatelessWidget {
                     children: [
                       getTitleAndCategories(service, width, metaData),
                       Text(''), //Needs to add the organization name
-                      getPriceAndPostedDate(service, showDate),
+                      getPostedDateAndLocation(service, showDate),
                     ],
                   ),
                 ),
@@ -125,7 +127,7 @@ class ServiceItem extends StatelessWidget {
         .join(', ');
   }
 
-  getPriceAndPostedDate(Service service, bool showDate) {
+  getPostedDateAndLocation(Service service, bool showDate) {
     final int days = DateTime.now().difference(service.modified).inDays;
     String time = '';
     if (days == 0) {

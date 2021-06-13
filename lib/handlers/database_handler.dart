@@ -18,7 +18,7 @@ class DatabaseHandler {
       Directory directory = await getApplicationDocumentsDirectory();
       String path = directory.path + Constant.dbName;
       _database = await openDatabase(path,
-          version: 3, onCreate: _createDb, onUpgrade: _upgradeDb);
+          version: 4, onCreate: _createDb, onUpgrade: _upgradeDb);
     }
     return _database;
   }
@@ -41,8 +41,11 @@ class DatabaseHandler {
   }
 
   void _upgradeDb(Database db, int oldVersion, int newVersion) async {
-    String partSql = 'ALTER TABLE PARTS ADD COLUMN ' + Part.locationCol;
+    String partSql = 'ALTER TABLE SERVICES ADD COLUMN ' + Service.descriptionCol;
     await db.execute(partSql);
+
+    String partSql2 = 'ALTER TABLE SERVICES ADD COLUMN ' + Service.locationCol;
+    await db.execute(partSql2);
   }
 
   Future closeConnection() async => _database.close();
