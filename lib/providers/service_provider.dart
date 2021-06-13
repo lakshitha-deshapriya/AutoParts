@@ -88,4 +88,7 @@ class ServiceProvider with ChangeNotifier {
     streamController.add(_serviceMap[categoryId]);
   }
 
+  hasDataForCategory(int category) {
+    return _serviceMap[category] != null && _serviceMap[category].isNotEmpty;
+  }
 }

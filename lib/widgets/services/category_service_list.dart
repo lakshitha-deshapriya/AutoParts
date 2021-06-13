@@ -59,7 +59,20 @@ class _CategoryServiceListState extends State<CategoryServiceList> {
             if (initCategoryKey.isNotEmpty &&
                 serviceProvider.isCategoryInitialized(widget.categoryId)) {
               serviceProvider.addDataToStream(
-                  streamController, widget.categoryId);
+                streamController,
+                widget.categoryId,
+              );
+              if (!serviceProvider.hasDataForCategory(widget.categoryId)) {
+                return Center(
+                  child: ThemeText(
+                    'No Services for category',
+                    style: TextStyle(
+                      fontSize: width * 0.055,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                );
+              }
               return child;
             } else {
               return CustomProgressIndicator();
