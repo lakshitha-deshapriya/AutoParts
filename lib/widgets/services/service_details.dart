@@ -1,11 +1,12 @@
 import 'package:auto_parts/constants/constant.dart';
-import 'package:auto_parts/models/part.dart';
 import 'package:auto_parts/models/service.dart';
+import 'package:auto_parts/providers/meta_data_provider.dart';
 import 'package:auto_parts/widgets/common/google_map_show.dart';
 import 'package:auto_parts/widgets/common/image_carousol.dart';
 import 'package:auto_parts/widgets/common/service_favourite_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:widget_lib/widget_lib.dart';
 import 'package:widget_lib/widgets/utils/widget_util.dart';
 
@@ -21,6 +22,11 @@ class ServiceDetails extends StatelessWidget {
 
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
+
+    final EdgeInsets padding =
+        EdgeInsets.symmetric(vertical: width * 0.02, horizontal: width * 0.05);
+
+    final MetaDataProvider metaData = context.read<MetaDataProvider>();
 
     return SafeArea(
       child: PlatformScaffold(
@@ -42,7 +48,7 @@ class ServiceDetails extends StatelessWidget {
                       top: width * 0.05,
                       left: width * 0.05,
                       right: width * 0.05,
-                      bottom: width * 0.02,
+                      bottom: 0,
                     ),
                     child: ThemeText(
                       service.name,
@@ -54,9 +60,22 @@ class ServiceDetails extends StatelessWidget {
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(
-                      vertical: width * 0.02,
+                      vertical: width * 0.01,
                       horizontal: width * 0.05,
                     ),
+                    child: ThemeText(
+                      getCategories(metaData, service),
+                      softWrap: true,
+                      darkColor: CupertinoColors.systemGrey4,
+                      style: TextStyle(
+                        color: CupertinoColors.systemGrey,
+                        fontSize: width * 0.042,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: padding,
                     child: ThemeText(
                       '(TODO: Add the marketer name)',
                       softWrap: false,
@@ -68,10 +87,7 @@ class ServiceDetails extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(
-                      vertical: width * 0.02,
-                      horizontal: width * 0.05,
-                    ),
+                    padding: padding,
                     child: ThemeText(
                       service.description,
                       softWrap: true,
@@ -90,6 +106,15 @@ class ServiceDetails extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  getCategories(MetaDataProvider metaData, Service service) {
+    final List<int> categories =
+        service.categories.map((category) => category.category).toList();
+    return metaData.serviceCategories
+        .where((category) => categories.contains(category.id))
+        .map((category) => category.category)
+        .join(', ');
   }
 
   loadGoogleMapWidget(Service service, double width) {

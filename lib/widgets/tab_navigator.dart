@@ -2,7 +2,6 @@ import 'package:auto_parts/constants/constant.dart';
 import 'package:auto_parts/providers/favourite_provider.dart';
 import 'package:auto_parts/providers/meta_data_provider.dart';
 import 'package:auto_parts/providers/parts_provider.dart';
-import 'package:auto_parts/providers/service_provider.dart';
 import 'package:auto_parts/widgets/favourites/favourites.dart';
 import 'package:auto_parts/widgets/parts/parts_widget.dart';
 import 'package:auto_parts/widgets/services/services.dart';
@@ -13,7 +12,7 @@ import 'package:nav_bar_widget/nav_bar_widget.dart';
 import 'package:provider/provider.dart';
 
 class TabNavigator extends StatelessWidget {
-  //Initialize initial data
+  //Initialize providers
   void initData(BuildContext context) {
     context.read<PartsProvider>().init();
     context.read<FavouriteProvider>().init();
