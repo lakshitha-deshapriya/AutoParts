@@ -28,10 +28,10 @@ class FavouriteServices extends StatelessWidget {
       ),
       body: Selector<FavouriteProvider, Tuple2<bool, String>>(
         selector: (_, provider) =>
-            Tuple2(provider.isInitialized, provider.newFavouritePartId),
+            Tuple2(provider.isInitialized, provider.newFavouriteServiceId),
         builder: (_, tuple, __) {
           if (tuple.item1) {
-            if (favouriteProvider.favouriteParts.isEmpty) {
+            if (favouriteProvider.favouriteServices.isEmpty) {
               return Center(
                 child: ThemeText(
                   'No Favourite Services',

@@ -96,7 +96,7 @@ class ServiceItem extends StatelessWidget {
             ServiceFavouriteIcon(
               service: service,
               iconSize: width * 0.055,
-              enableAction: false,
+              enableAction: enableFavouriteAction,
               showInactive: false,
             ),
           ],
