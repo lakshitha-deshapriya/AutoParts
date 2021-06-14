@@ -123,7 +123,7 @@ class ServiceItem extends StatelessWidget {
         service.categories.map((category) => category.category).toList();
     return metaData.serviceCategories
         .where((category) => categories.contains(category.id))
-        .map((category) => category.category)
+        .map((category) => category.categoryName)
         .join(', ');
   }
 

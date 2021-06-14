@@ -5,6 +5,7 @@ import 'package:auto_parts/models/part.dart';
 import 'package:auto_parts/models/part_image.dart';
 import 'package:auto_parts/models/savable.dart';
 import 'package:auto_parts/models/service.dart';
+import 'package:auto_parts/models/service_category.dart';
 import 'package:auto_parts/models/service_category_data.dart';
 import 'package:auto_parts/models/service_image.dart';
 import 'package:path_provider/path_provider.dart';
@@ -18,7 +19,7 @@ class DatabaseHandler {
       Directory directory = await getApplicationDocumentsDirectory();
       String path = directory.path + Constant.dbName;
       _database = await openDatabase(path,
-          version: 4, onCreate: _createDb, onUpgrade: _upgradeDb);
+          version: 5, onCreate: _createDb, onUpgrade: _upgradeDb);
     }
     return _database;
   }
@@ -38,14 +39,20 @@ class DatabaseHandler {
 
     String serviceCategoryDataSql = ServiceCategoryData.getOnCreateSql();
     await db.execute(serviceCategoryDataSql);
+
+    String serviceCategorySql = ServiceCategory.getOnCreateSql();
+    await db.execute(serviceCategorySql);
   }
 
   void _upgradeDb(Database db, int oldVersion, int newVersion) async {
-    String partSql = 'ALTER TABLE SERVICES ADD COLUMN ' + Service.descriptionCol;
-    await db.execute(partSql);
+    // String partSql = 'ALTER TABLE SERVICES ADD COLUMN ' + Service.descriptionCol;
+    // await db.execute(partSql);
 
-    String partSql2 = 'ALTER TABLE SERVICES ADD COLUMN ' + Service.locationCol;
-    await db.execute(partSql2);
+    // String partSql2 = 'ALTER TABLE SERVICES ADD COLUMN ' + Service.locationCol;
+    // await db.execute(partSql2);
+
+    String serviceCategorySql = ServiceCategory.getOnCreateSql();
+    await db.execute(serviceCategorySql);
   }
 
   Future closeConnection() async => _database.close();

@@ -61,7 +61,7 @@ class FavouriteProvider with ChangeNotifier {
     }
 
     _initialized = true;
-    await handler.closeConnection();
+    // await handler.closeConnection();
   }
 
   bool get isInitialized => _initialized;

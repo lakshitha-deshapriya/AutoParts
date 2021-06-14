@@ -61,7 +61,7 @@ class Services extends StatelessWidget {
                       ),
                       Center(
                         child: ThemeText(
-                          provider.serviceCategories[index].category,
+                          provider.serviceCategories[index].categoryName,
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
