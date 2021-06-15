@@ -13,11 +13,12 @@ class FavouriteProvider with ChangeNotifier {
 
   List<Service> _favouriteServices = [];
   Set<String> _favouriteServiceIds = {};
+  List<Service> _filteredServices = [];
 
   bool _initialized = false;
 
   String _newFavouritePart = '';
-  String _newFavouriteServiceId = '';
+  String _newFavouriteService = '';
 
   init() async {
     loadFavourites();
@@ -47,6 +48,7 @@ class FavouriteProvider with ChangeNotifier {
     //Load favourite service details
     _favouriteServices = await handler.getAll(Service.tableName).then(
         (value) => value.map((map) => Service.fromMapObject(map)).toList());
+    _filteredServices = _favouriteServices;
 
     _favouriteServiceIds.clear();
     for (Service service in _favouriteServices) {
@@ -69,6 +71,7 @@ class FavouriteProvider with ChangeNotifier {
 
   resetData() {
     _filteredParts = _favouriteParts;
+    _filteredServices = _favouriteServices;
   }
 
   filterDataForPartSearch(String searchText) {
@@ -76,11 +79,25 @@ class FavouriteProvider with ChangeNotifier {
       _filteredParts = _favouriteParts;
     } else {
       _filteredParts = _favouriteParts
-          .where((part) => part.name.contains(searchText))
+          .where((part) =>
+              part.name.toLowerCase().contains(searchText.toLowerCase()))
           .toList();
     }
 
     setNewFavouritePart('Search for:' + searchText);
+  }
+
+  filterDataForServiceSearch(String searchText) {
+    if (searchText.isEmpty) {
+      _filteredServices = _favouriteServices;
+    } else {
+      _filteredServices = _favouriteServices
+          .where((service) =>
+              service.name.toLowerCase().contains(searchText.toLowerCase()))
+          .toList();
+    }
+
+    setNewFavouriteService('Search for:' + searchText);
   }
 
   bool get isInitialized => _initialized;
@@ -93,6 +110,7 @@ class FavouriteProvider with ChangeNotifier {
   List<Part> get filteredFavouriteParts => _filteredParts;
 
   List<Service> get favouriteServices => _favouriteServices;
+  List<Service> get filteredFavouriteServices => _filteredServices;
 
   String get newFavouritePart => _newFavouritePart;
   setNewFavouritePart(String str) {
@@ -100,9 +118,9 @@ class FavouriteProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  String get newFavouriteServiceId => _newFavouriteServiceId;
-  setNewFavouriteServiceId(String id) {
-    _newFavouriteServiceId = id;
+  String get newFavouriteService => _newFavouriteService;
+  setNewFavouriteService(String str) {
+    _newFavouriteService = str;
     notifyListeners();
   }
 
@@ -135,7 +153,7 @@ class FavouriteProvider with ChangeNotifier {
 
     await loadFavourites();
 
-    setNewFavouriteServiceId(service.id);
+    setNewFavouriteService(service.id);
   }
 
   removeFromFavouriteServices(Service service) async {
@@ -143,7 +161,7 @@ class FavouriteProvider with ChangeNotifier {
 
     await loadFavourites();
 
-    setNewFavouriteServiceId('changed ' + service.id);
+    setNewFavouriteService('changed ' + service.id);
   }
 
   insertPartToDb(Part part) async {

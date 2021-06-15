@@ -16,15 +16,15 @@ class FavouriteParts extends StatefulWidget {
 class _FavouritePartsState extends State<FavouriteParts> {
   FavouriteProvider favouriteProvider;
 
+  onSearchTextSubmitted(String searchText) {
+    favouriteProvider.filterDataForPartSearch(searchText);
+  }
+
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
 
     favouriteProvider = context.read<FavouriteProvider>();
-
-    onSearchTextSubmitted(String searchText) {
-      favouriteProvider.filterDataForPartSearch(searchText);
-    }
 
     return PlatformScaffold(
       topPadding: false,

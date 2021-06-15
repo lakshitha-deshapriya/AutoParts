@@ -8,9 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:widget_lib/widget_lib.dart';
 
 class Favourites extends StatelessWidget {
-  navigate(BuildContext context, Widget widget, int index) {
-    final page = FavouriteParts();
-    NavigationUtil.navigatePush(context, page);
+  navigate(BuildContext context, Widget widget) {
+    NavigationUtil.navigatePush(context, widget);
   }
 
   @override
@@ -40,7 +39,7 @@ class Favourites extends StatelessWidget {
           itemCount: categoryData.length,
           itemBuilder: (context, index) {
             return GestureDetector(
-              onTap: () => navigate(context, categoryData[index][1], index),
+              onTap: () => navigate(context, categoryData[index][1]),
               child: Container(
                 child: Stack(
                   children: [

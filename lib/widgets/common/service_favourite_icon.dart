@@ -28,7 +28,7 @@ class ServiceFavouriteIcon extends StatelessWidget {
     return GestureDetector(
       child: Selector<FavouriteProvider, Tuple2<bool, String>>(
         selector: (_, provider) =>
-            Tuple2(provider.isInitialized, provider.newFavouriteServiceId),
+            Tuple2(provider.isInitialized, provider.newFavouriteService),
         builder: (_, tuple, child) {
           if ((tuple.item1 && tuple.item2 == service.id) ||
               favouriteProvider.isFavouriteService(service.id)) {
@@ -52,7 +52,7 @@ class ServiceFavouriteIcon extends StatelessWidget {
       onTap: () {
         if (enableAction) {
           if (favouriteProvider.isFavouriteService(service.id) ||
-              favouriteProvider.newFavouriteServiceId == service.id) {
+              favouriteProvider.newFavouriteService == service.id) {
             favouriteProvider.removeFromFavouriteServices(service);
           } else {
             favouriteProvider.addToFavouriteServices(service);

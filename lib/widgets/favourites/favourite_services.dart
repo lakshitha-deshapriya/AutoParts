@@ -8,15 +8,25 @@ import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 import 'package:widget_lib/widget_lib.dart';
 
-class FavouriteServices extends StatelessWidget {
+class FavouriteServices extends StatefulWidget {
   const FavouriteServices();
+
+  @override
+  _FavouriteServicesState createState() => _FavouriteServicesState();
+}
+
+class _FavouriteServicesState extends State<FavouriteServices> {
+  FavouriteProvider favouriteProvider;
+
+  onSearchTextSubmitted(String searchText) {
+    favouriteProvider.filterDataForServiceSearch(searchText);
+  }
 
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
 
-    final FavouriteProvider favouriteProvider =
-        context.read<FavouriteProvider>();
+    favouriteProvider = context.read<FavouriteProvider>();
 
     return PlatformScaffold(
       topPadding: false,
@@ -28,10 +38,10 @@ class FavouriteServices extends StatelessWidget {
       ),
       body: Selector<FavouriteProvider, Tuple2<bool, String>>(
         selector: (_, provider) =>
-            Tuple2(provider.isInitialized, provider.newFavouriteServiceId),
+            Tuple2(provider.isInitialized, provider.newFavouriteService),
         builder: (_, tuple, __) {
           if (tuple.item1) {
-            if (favouriteProvider.favouriteServices.isEmpty) {
+            if (favouriteProvider.filteredFavouriteServices.isEmpty) {
               return Center(
                 child: ThemeText(
                   'No Favourite Services',
@@ -48,11 +58,11 @@ class FavouriteServices extends StatelessWidget {
                 bottom: width * 0.01,
               ),
               child: ListView.builder(
-                itemCount: favouriteProvider.favouriteServices.length,
+                itemCount: favouriteProvider.filteredFavouriteServices.length,
                 itemBuilder: (context, index) {
                   return ServiceItem(
                     width: width,
-                    service: favouriteProvider.favouriteServices[index],
+                    service: favouriteProvider.filteredFavouriteServices[index],
                     showDate: false,
                     enableFavouriteAction: true,
                   );
@@ -67,7 +77,9 @@ class FavouriteServices extends StatelessWidget {
     );
   }
 
-  onSearchTextSubmitted(String searchText) {
-    print(searchText);
+  @override
+  void dispose() {
+    favouriteProvider.resetData();
+    super.dispose();
   }
 }
