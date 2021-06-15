@@ -28,7 +28,7 @@ class PartFavouriteIcon extends StatelessWidget {
     return GestureDetector(
       child: Selector<FavouriteProvider, Tuple2<bool, String>>(
         selector: (_, provider) =>
-            Tuple2(provider.isInitialized, provider.newFavouritePartId),
+            Tuple2(provider.isInitialized, provider.newFavouritePart),
         builder: (_, tuple, child) {
           if ((tuple.item1 && tuple.item2 == part.id) ||
               favouriteProvider.isFavouritePart(part.id)) {
@@ -52,7 +52,7 @@ class PartFavouriteIcon extends StatelessWidget {
       onTap: () {
         if (enableAction) {
           if (favouriteProvider.isFavouritePart(part.id) ||
-              favouriteProvider.newFavouritePartId == part.id) {
+              favouriteProvider.newFavouritePart == part.id) {
             favouriteProvider.removeFromFavouriteParts(part);
           } else {
             favouriteProvider.addToFavouriteParts(part);

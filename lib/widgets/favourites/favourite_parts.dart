@@ -8,13 +8,23 @@ import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 import 'package:widget_lib/widget_lib.dart';
 
-class FavouriteParts extends StatelessWidget {
+class FavouriteParts extends StatefulWidget {
+  @override
+  _FavouritePartsState createState() => _FavouritePartsState();
+}
+
+class _FavouritePartsState extends State<FavouriteParts> {
+  FavouriteProvider favouriteProvider;
+
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
 
-    final FavouriteProvider favouriteProvider =
-        context.read<FavouriteProvider>();
+    favouriteProvider = context.read<FavouriteProvider>();
+
+    onSearchTextSubmitted(String searchText) {
+      favouriteProvider.filterDataForPartSearch(searchText);
+    }
 
     return PlatformScaffold(
       topPadding: false,
@@ -26,10 +36,10 @@ class FavouriteParts extends StatelessWidget {
       ),
       body: Selector<FavouriteProvider, Tuple2<bool, String>>(
         selector: (_, provider) =>
-            Tuple2(provider.isInitialized, provider.newFavouritePartId),
+            Tuple2(provider.isInitialized, provider.newFavouritePart),
         builder: (_, tuple, __) {
           if (tuple.item1) {
-            if (favouriteProvider.favouriteParts.isEmpty) {
+            if (favouriteProvider.filteredFavouriteParts.isEmpty) {
               return Center(
                 child: ThemeText(
                   'No Favourite Parts',
@@ -46,11 +56,11 @@ class FavouriteParts extends StatelessWidget {
                 bottom: width * 0.01,
               ),
               child: ListView.builder(
-                itemCount: favouriteProvider.favouriteParts.length,
+                itemCount: favouriteProvider.filteredFavouriteParts.length,
                 itemBuilder: (context, index) {
                   return PartItem(
                     width: width,
-                    part: favouriteProvider.favouriteParts[index],
+                    part: favouriteProvider.filteredFavouriteParts[index],
                     showDate: false,
                     enableFavouriteAction: true,
                   );
@@ -65,7 +75,9 @@ class FavouriteParts extends StatelessWidget {
     );
   }
 
-  onSearchTextSubmitted(String searchText) {
-    print(searchText);
+  @override
+  void dispose() {
+    favouriteProvider.resetData();
+    super.dispose();
   }
 }

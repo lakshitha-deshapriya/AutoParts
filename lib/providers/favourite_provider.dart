@@ -9,12 +9,14 @@ import 'package:flutter/material.dart';
 class FavouriteProvider with ChangeNotifier {
   List<Part> _favouriteParts = [];
   Set<String> _favouritePartIds = {};
+  List<Part> _filteredParts = [];
 
   List<Service> _favouriteServices = [];
   Set<String> _favouriteServiceIds = {};
 
   bool _initialized = false;
-  String _newFavouritePartId = '';
+
+  String _newFavouritePart = '';
   String _newFavouriteServiceId = '';
 
   init() async {
@@ -29,6 +31,7 @@ class FavouriteProvider with ChangeNotifier {
     _favouriteParts = await handler
         .getAll(Part.tableName)
         .then((value) => value.map((map) => Part.fromMapObject(map)).toList());
+    _filteredParts = _favouriteParts;
 
     _favouritePartIds.clear();
     for (Part part in _favouriteParts) {
@@ -64,6 +67,22 @@ class FavouriteProvider with ChangeNotifier {
     // await handler.closeConnection();
   }
 
+  resetData() {
+    _filteredParts = _favouriteParts;
+  }
+
+  filterDataForPartSearch(String searchText) {
+    if (searchText.isEmpty) {
+      _filteredParts = _favouriteParts;
+    } else {
+      _filteredParts = _favouriteParts
+          .where((part) => part.name.contains(searchText))
+          .toList();
+    }
+
+    setNewFavouritePart('Search for:' + searchText);
+  }
+
   bool get isInitialized => _initialized;
   setInitialized(bool initialized) {
     _initialized = initialized;
@@ -71,12 +90,13 @@ class FavouriteProvider with ChangeNotifier {
   }
 
   List<Part> get favouriteParts => _favouriteParts;
+  List<Part> get filteredFavouriteParts => _filteredParts;
 
   List<Service> get favouriteServices => _favouriteServices;
 
-  String get newFavouritePartId => _newFavouritePartId;
-  setNewFavouritePartId(String id) {
-    _newFavouritePartId = id;
+  String get newFavouritePart => _newFavouritePart;
+  setNewFavouritePart(String str) {
+    _newFavouritePart = str;
     notifyListeners();
   }
 
@@ -99,7 +119,7 @@ class FavouriteProvider with ChangeNotifier {
 
     await loadFavourites();
 
-    setNewFavouritePartId(part.id);
+    setNewFavouritePart(part.id);
   }
 
   removeFromFavouriteParts(Part part) async {
@@ -107,11 +127,11 @@ class FavouriteProvider with ChangeNotifier {
 
     await loadFavourites();
 
-    setNewFavouritePartId('changed' + part.id);
+    setNewFavouritePart('changed' + part.id);
   }
 
   addToFavouriteServices(Service service) async {
-    await insertServiceToDb(service); 
+    await insertServiceToDb(service);
 
     await loadFavourites();
 

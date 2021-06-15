@@ -91,4 +91,7 @@ class ServiceProvider with ChangeNotifier {
   hasDataForCategory(int category) {
     return _serviceMap[category] != null && _serviceMap[category].isNotEmpty;
   }
+
+  filterDataForSearch(String searchText, StreamController streamController) {
+  }
 }

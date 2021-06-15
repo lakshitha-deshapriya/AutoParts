@@ -8,19 +8,22 @@ import 'package:flutter/material.dart';
 import 'package:widget_lib/widget_lib.dart';
 
 class Favourites extends StatelessWidget {
-  const Favourites();
-
-  navigate(BuildContext context, Widget widget) {
-    NavigationUtil.navigatePush(context, widget);
+  navigate(BuildContext context, Widget widget, int index) {
+    final page = FavouriteParts();
+    NavigationUtil.navigatePush(context, page);
   }
 
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
 
+
+    final FavouriteParts parts = FavouriteParts();
+    final FavouriteServices services = FavouriteServices();
+
     final Map<int, List<dynamic>> categoryData = {
-      0: ['Parts', FavouriteParts(), 'assets/images/parts.png', 0.9],
-      1: ['Services', FavouriteServices(), 'assets/images/services.png', 0.8],
+      0: ['Parts', parts, 'assets/images/parts.png', 0.9],
+      1: ['Services', services, 'assets/images/services.png', 0.8],
     };
 
     return PlatformScaffold(
@@ -37,7 +40,7 @@ class Favourites extends StatelessWidget {
           itemCount: categoryData.length,
           itemBuilder: (context, index) {
             return GestureDetector(
-              onTap: () => navigate(context, categoryData[index][1]),
+              onTap: () => navigate(context, categoryData[index][1], index),
               child: Container(
                 child: Stack(
                   children: [

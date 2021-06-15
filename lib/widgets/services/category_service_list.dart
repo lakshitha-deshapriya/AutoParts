@@ -31,6 +31,10 @@ class _CategoryServiceListState extends State<CategoryServiceList> {
 
     final double width = MediaQuery.of(context).size.width;
 
+    onSearchTextSubmitted(String searchText) {
+      serviceProvider.filterDataForSearch(searchText, streamController);
+    }
+
     return PlatformScaffold(
       topPadding: false,
       appBar: AppBar(
@@ -115,9 +119,5 @@ class _CategoryServiceListState extends State<CategoryServiceList> {
   void dispose() {
     streamController.close();
     super.dispose();
-  }
-
-  onSearchTextSubmitted(String searchText) {
-    print(searchText);
   }
 }
