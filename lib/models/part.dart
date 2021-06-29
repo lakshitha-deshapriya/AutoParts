@@ -128,6 +128,47 @@ class Part extends Savable {
     );
   }
 
+  factory Part.fromServerJson(dynamic json) {
+    String id = json[idKey].toString();
+    String name = json[nameKey];
+    String brand = json[brandKey];
+    String model = json[modelKey];
+    String year = json[yearKey]?.toString() ?? 'Any';
+    String condition = json[conditionKey]?.toString() ?? '(Not specified)';
+    String description = json[descriptionKey]?.toString() ?? '(Description)';
+    String enteredTimestamp = json[enteredKey];
+    String modifiedTimestamp = json[modifiedKey];
+    String cur = json[curKey];
+    double price = json[priceKey];
+    String coverUrl = json[coverUrlKey]?.toString() ?? '';
+    String location = json[locationKey]?.toString() ?? '';
+    List<PartImage> images = json.containsKey(imagesKey)
+        ? List<String>.from(json[imagesKey])
+            .map((imageUrl) => PartImage(id: id, imageUrl: imageUrl))
+            .toList()
+        : [];
+
+    DateTime entered = DateTime.parse(enteredTimestamp);
+    DateTime modified = DateTime.parse(modifiedTimestamp);
+
+    return Part(
+      id: id,
+      name: name,
+      brand: brand,
+      model: model,
+      year: year,
+      condition: condition,
+      description: description,
+      entered: entered,
+      modified: modified,
+      cur: cur,
+      price: price,
+      coverUrl: coverUrl,
+      location: location,
+      images: images,
+    );
+  }
+
   static String getOnCreateSql() {
     String partSql = 'CREATE TABLE ' + tableName + ' ( ';
     int partIndex = 1;

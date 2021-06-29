@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:auto_parts/constants/constant.dart';
+import 'package:auto_parts/handlers/http_data_handler.dart';
 import 'package:auto_parts/models/part.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -14,17 +16,11 @@ class PartsProvider with ChangeNotifier {
 
   init() async {
     if (!_initialized) {
-      QuerySnapshot _querySnapshot = await FirebaseFirestore.instance
-          .collection(Constant.partsCollection)
-          .orderBy(Constant.initialSort, descending: true)
-          .limit(Constant.partsLimit)
-          .get();
-
-      _snapshots = _querySnapshot.docs;
-
-      _snapshots.forEach((doc) {
-        _parts.add(Part.fromJson(doc));
-      });
+      if (Constant.useFirebase) {
+        await loadPartsFromFirebase();
+      } else {
+        await loadPartsFromServer('search');
+      }
 
       setInitialized(true);
     }
@@ -55,6 +51,38 @@ class PartsProvider with ChangeNotifier {
         }
       }
     }
+  }
+
+  loadPartsFromServer(String apiUrl) async {
+    List<Part> parts = [];
+    try {
+      var res =
+          await HttpDataHandler().get(Constant.getBaseUrl(), apiUrl);
+
+      for (var json in json.decode(res) as List) {
+        parts.add(Part.fromServerJson(json));
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+    _parts.addAll(parts);
+    if (Constant.partsLimit == parts.length) {
+      _nextLoading = false;
+    }
+  }
+
+  loadPartsFromFirebase() async {
+    QuerySnapshot _querySnapshot = await FirebaseFirestore.instance
+        .collection(Constant.partsCollection)
+        .orderBy(Constant.initialSort, descending: true)
+        .limit(Constant.partsLimit)
+        .get();
+
+    _snapshots = _querySnapshot.docs;
+
+    _snapshots.forEach((doc) {
+      _parts.add(Part.fromJson(doc));
+    });
   }
 
   bool get isInitialized => _initialized;
