@@ -65,6 +65,8 @@ class MetaDataProvider with ChangeNotifier {
     DatabaseHandler handler = new DatabaseHandler();
     await handler.openConnection();
 
+    await handler.deleteAll(ServiceCategory.tableName);
+
     await handler.insertAll(_serviceCategories);
   }
 
